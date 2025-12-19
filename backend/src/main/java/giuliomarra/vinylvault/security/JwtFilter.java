@@ -36,7 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             String accessToken = authHeader.substring(7);
-
             jwtTool.verifyToken(accessToken);
 
             String id = jwtTool.extractIdFromToken(accessToken);
@@ -49,11 +48,9 @@ public class JwtFilter extends OncePerRequestFilter {
             );
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
             filterChain.doFilter(request, response);
 
-        } catch (Exception e) {
-
+        } catch (RuntimeException e) {
             SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json;charset=UTF-8");
@@ -61,13 +58,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     "{\"error\": \"Autenticazione fallita\", " +
                             "\"message\": \"" + e.getMessage() + "\"}"
             );
-
         }
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        return path.startsWith("/auth/") || path.startsWith("/public/");
+        return path.startsWith("/auth/") || path.startsWith("/api/");
     }
 }

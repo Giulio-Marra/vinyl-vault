@@ -5,6 +5,8 @@ import giuliomarra.vinylvault.model.Artist;
 import giuliomarra.vinylvault.repository.ArtistRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ArtistService {
     private final ArtistRepository artistRepository;
@@ -31,4 +33,26 @@ public class ArtistService {
         return artistRepository.findById(aristId)
                 .orElseThrow(() -> new RuntimeException("Artista con id: " + aristId + " non trovato!"));
     }
+
+    public List<Artist> findAllArtists() {
+        return artistRepository.findAll();
+    }
+
+    public Artist updateArtist(Long artistId, NewArtistRequiredDto body) {
+
+        Artist artist = findArtistById(artistId);
+
+        artist.setName(body.name());
+        artist.setAbout(body.about());
+        artist.setUrlImage(body.urlImage());
+
+        return artistRepository.save(artist);
+    }
+
+    public void deleteArtist(Long artistId) {
+        Artist artist = findArtistById(artistId);
+        artistRepository.delete(artist);
+    }
+
+
 }

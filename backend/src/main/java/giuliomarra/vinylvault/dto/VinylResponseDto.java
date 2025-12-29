@@ -1,37 +1,23 @@
-package giuliomarra.vinylvault.model;
+package giuliomarra.vinylvault.dto;
 
-import jakarta.persistence.*;
+import giuliomarra.vinylvault.model.Artist;
+import giuliomarra.vinylvault.model.Genre;
 
 import java.util.List;
 
-@Entity
-public class Vinyl {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+public class VinylResponseDto {
     private Long id;
-
     private String title;
     private String urlImage;
     private String description;
     private Double price;
     private Integer stock;
-
-    @ManyToOne
-    @JoinColumn(name = "artist_id")
     private Artist artist;
-
-    @ManyToMany
-    @JoinTable(
-            name = "vinyl_genre",
-            joinColumns = @JoinColumn(name = "vinyl_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
     private List<Genre> genreList;
-    
-    public Vinyl() {
-    }
+    private List<TrackResponseDto> tracks;
 
-    public Vinyl(String title, String urlImage, String description, Double price, Integer stock, Artist artist, List<Genre> genreList) {
+    public VinylResponseDto(Long id, String title, String urlImage, String description, Double price, Integer stock, Artist artist, List<Genre> genreList, List<TrackResponseDto> tracks) {
+        this.id = id;
         this.title = title;
         this.urlImage = urlImage;
         this.description = description;
@@ -39,6 +25,7 @@ public class Vinyl {
         this.stock = stock;
         this.artist = artist;
         this.genreList = genreList;
+        this.tracks = tracks;
     }
 
     public Long getId() {
@@ -103,5 +90,13 @@ public class Vinyl {
 
     public void setGenreList(List<Genre> genreList) {
         this.genreList = genreList;
+    }
+
+    public List<TrackResponseDto> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(List<TrackResponseDto> tracks) {
+        this.tracks = tracks;
     }
 }

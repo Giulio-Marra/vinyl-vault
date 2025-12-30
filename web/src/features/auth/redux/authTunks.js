@@ -4,10 +4,10 @@ import { loginService } from "./authService";
 export const loginAction =
   ({ email, password, remember }) =>
   async (dispatch) => {
+    dispatch(setLoading(true));
+    dispatch(setError(null));
     try {
-      dispatch(setLoading(true));
-      dispatch(setError(null));
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const token = await loginService({ email, password });
 
       if (remember) {
@@ -17,7 +17,7 @@ export const loginAction =
       }
     } catch (err) {
       dispatch(setError(err.message));
-      dispatch(setLoading(false));
+      console.log(err.message);
     } finally {
       dispatch(setLoading(false));
     }

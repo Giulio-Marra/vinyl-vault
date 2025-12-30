@@ -25,7 +25,7 @@ export async function registerService({ username, email, password }) {
 
   if (!response.ok) {
     const errData = await response.json();
-    throw new Error(errData.message || "Problema con la registrazione");
+    throw new Error(errData.message, "Problema con la registrazione");
   }
 
   const data = await response.json();

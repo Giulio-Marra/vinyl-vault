@@ -2,8 +2,8 @@ import { SET_USER, REMOVE_USER, SET_LOADING, SET_ERROR } from "./authActions";
 
 const initialState = {
   user: null,
-  loading: false,
-  errore: null,
+  isLoading: false,
+  error: null,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -30,7 +30,6 @@ export default function authReducer(state = initialState, action) {
     case SET_ERROR:
       return {
         ...state,
-        isLoading: false,
         error: action.payload,
       };
     default:

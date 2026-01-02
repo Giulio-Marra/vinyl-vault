@@ -4,7 +4,7 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.LoginPageContainer {
+.authPageContainer {
   background-color: #080a0f;
   display: flex;
   height: 100vh;
@@ -28,6 +28,13 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #121924;
+}
+.registerFormContainer{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #122419;
 }
 
 .loginFormInner {
@@ -95,12 +102,13 @@ body {
 .inputWrapper input {
   width: 100%;
   padding: 12px 15px 12px 45px;
-  background-color: #2d3748;
+   background-color: rgba(45, 55, 72, 0.2);
   border: 1px solid #4a5568;
   border-radius: 8px;
   color: white;
   font-size: 1rem;
   box-sizing: border-box;
+   
 }
 
 .inputWrapper input::placeholder {
@@ -153,6 +161,21 @@ body {
   font-weight: 600;
   cursor: pointer;
   margin-bottom: 1.5rem;
+}
+.registerButton{
+   width: 100%;
+  padding: 14px;
+  background-color: #1fc05d;
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+}
+.registerButton:hover{
+  background-color: #1aa14e;
 }
 
 .loginButton:hover {
@@ -240,4 +263,12 @@ body {
   align-items: center;
   height: 100vh;
   background-color: #111621;
+}
+.flexPass{
+  display: flex;
+  gap: 10px;
+}
+.link{
+  color: #3b82f6;
+  cursor: pointer;
 }

@@ -17,17 +17,21 @@ export async function loginService({ email, password }) {
 }
 
 export async function registerService({ username, email, password }) {
-  const response = await fetch(`${BASE_URL}/auth/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ username, email, password }),
-  });
+  try {
+    const response = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, email, password }),
+    });
 
-  if (!response.ok) {
-    const errData = await response.json();
-    throw new Error(errData.message, "Problema con la registrazione");
+    if (!response.ok) {
+      const errData = await response.json();
+      throw new Error(errData.message || "Problema con la registrazione");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Registrazione fallita: ${error}`);
   }
-
-  const data = await response.json();
-  return data;
 }

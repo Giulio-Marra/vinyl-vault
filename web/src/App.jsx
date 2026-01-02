@@ -3,6 +3,7 @@ import LoginPage from "./pages/LoginPage";
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import "./styles/App.css";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         {/* Rotte di autentificazione*/}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
 
         {/* Rotte dell app */}

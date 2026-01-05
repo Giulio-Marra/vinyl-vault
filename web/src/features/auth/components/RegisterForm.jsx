@@ -4,10 +4,12 @@ import { IoMdLock } from "react-icons/io";
 import { MdEmail, MdMusicNote } from "react-icons/md";
 import { useNavigate } from "react-router";
 import { registerService } from "../redux/authService";
+import { ScaleLoader } from "react-spinners";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -40,6 +42,7 @@ const RegisterForm = () => {
     }
 
     try {
+      setLoading(true);
       await registerService({
         username: formData.username,
         email: formData.email,
@@ -49,6 +52,8 @@ const RegisterForm = () => {
       navigate("/login");
     } catch (err) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -145,7 +150,11 @@ const RegisterForm = () => {
             </label>
           </div>
           <button type="submit" className="registerButton">
-            Register Account
+            {loading ? (
+              <ScaleLoader color="white" height={"12px"} />
+            ) : (
+              "Register Account"
+            )}
           </button>
 
           <div className="divider">

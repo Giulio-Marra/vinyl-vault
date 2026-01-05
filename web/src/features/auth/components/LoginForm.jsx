@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { IoMdLock } from "react-icons/io";
 import { MdEmail, MdMusicNote } from "react-icons/md";
@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../redux/authTunks";
 import { ScaleLoader } from "react-spinners";
 import { useNavigate } from "react-router";
+import { setError } from "../redux/authActions";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ const LoginForm = () => {
       })
     );
   };
+
+  useEffect(() => {
+    dispatch(setError(null));
+  }, []);
 
   return (
     <>
@@ -47,6 +52,7 @@ const LoginForm = () => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -63,6 +69,7 @@ const LoginForm = () => {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
               </div>
             </div>

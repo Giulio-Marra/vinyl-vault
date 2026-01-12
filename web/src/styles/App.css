@@ -459,3 +459,55 @@ h2{
    cursor: pointer;
    border: none;
 }
+/* footer */
+.footerContainer {
+  background-color: #0e1a1d;
+  border-top: 1px solid rgba(255, 255, 255, 0.185);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.171);
+  padding: 40px 2%;
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+}
+
+.footerContainer h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.footerContainer a {
+  color: gray;        
+  text-decoration: none;
+  display: block;
+  margin-bottom: 6px;
+  transition: color 0.2s ease;
+}
+
+.footerContainer a:hover {
+  color: white;
+}
+
+.colLinkFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;          
+}
+
+.colLinkFooter a {
+  color: gray;
+  font-size: 1.5em;
+}
+
+.colLinkFooter a:hover {
+  color: white;
+}
+
+/* copyright sotto footer */
+.footerCopyright {
+  background-color: #0e1a1d;
+  color: #9ca3af;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 0.9rem;
+}
+

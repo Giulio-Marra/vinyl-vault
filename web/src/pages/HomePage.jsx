@@ -1,4 +1,24 @@
 import React from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
+const genres = [
+  "Rock",
+  "Classic Rock",
+  "Jazz",
+  "Blues",
+  "Soul",
+  "Funk",
+  "Disco",
+  "Hip Hop",
+  "Electronic",
+  "House",
+  "Techno",
+  "Ambient",
+  "Classical",
+  "Soundtracks",
+  "Reggae",
+  "Punk",
+];
 
 const HomePage = () => {
   return (
@@ -24,8 +44,26 @@ const HomePage = () => {
           </button>
         </div>
       </div>
-      <div></div>
-      <div></div>
+      <div className="genreMenu">
+        <h2>Browse by Genre</h2>
+        {genres.map((genre) => (
+          <button className="btnGenre">{genre}</button>
+        ))}
+      </div>
+      <div className="homePageFeaturedRecords">
+        <div className="homePageFeaturedRecordsTit">
+          <h2>Featured Records</h2>
+          <div>
+            <buton>
+              <FaArrowLeft />
+            </buton>
+            <buton>
+              <FaArrowRight />
+            </buton>
+          </div>
+        </div>
+        <div></div>
+      </div>
       <div></div>
     </div>
   );

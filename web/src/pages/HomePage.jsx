@@ -1,5 +1,6 @@
 import React from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { IoMdMail } from "react-icons/io";
 
 const genres = [
   "Rock",
@@ -64,7 +65,24 @@ const HomePage = () => {
         </div>
         <div></div>
       </div>
-      <div></div>
+      <div className="homePageJoinContainer">
+        <IoMdMail className="emailIcon" />
+        <div>
+          <h2>Join the VinylVault Club</h2>
+          <p>
+            Get 10% off your first order, exclusive access to limited drops, and
+            weekly curated playlists.
+          </p>
+        </div>
+        <form>
+          <input
+            type="email"
+            placeholder="Enter your email"
+            className="inptSubscribe"
+          />
+          <button className="btnSubscribe">Subscribe</button>
+        </form>
+      </div>
     </div>
   );
 };

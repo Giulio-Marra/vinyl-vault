@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #0e1a1d;
 }
 
 .authPageContainer {
@@ -274,4 +275,66 @@ body {
 }
 .navBar{
   display: flex;
+  background-color: #0e1a1d;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* HomePage */
+.homePageContainer{
+  padding: 2%;
+}
+.homePageImageContainer {
+  position: relative;
+  height: 600px;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.imageHomePage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position:center;
+}
+.imageFadeOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(14, 26, 29, 1),
+    rgba(14, 26, 29, 0)
+  );
+  pointer-events: none;
+}
+.homePageTextBanner{
+  padding: 50px;
+  position: absolute;
+  max-width: 30%;
+  top: 10%;
+  color: white;
+  z-index: 2;
+  
+}
+.homePageTextBanner h1{
+  font-size: 8vh;
+  margin: 0;
+}
+.homePageTextBanner h1 span{
+    display: block;
+    color: #17b0cf;
+}
+.homePageTextBanner p{
+  color: rgb(179, 179, 179);
+  font-size: 2vh;
+}
+
+.btnViewCollectionHomePage{
+   border-radius: 10px;
+   padding: 15px 30px;
+   background-color: #17b0cf;
+   font-size: 2vh;
+   cursor: pointer;
+   border: none;
 }

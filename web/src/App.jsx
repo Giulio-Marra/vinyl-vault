@@ -4,6 +4,7 @@ import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
 import "./styles/App.css";
 import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
 
         {/* Rotte dell app */}
         <Route element={<MainLayout />}>
-          <Route path="/" element={<h1>Home</h1>} />
+          <Route path="/" element={<HomePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

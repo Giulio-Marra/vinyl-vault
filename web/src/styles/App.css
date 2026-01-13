@@ -339,6 +339,7 @@ h2{
 /* HomePage */
 .homePageContainer{
   padding: 40px 6%;
+  background-color: #0e1a1d;
 }
 .homePageImageContainer {
   position: relative;

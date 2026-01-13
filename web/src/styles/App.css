@@ -1,3 +1,4 @@
+
 body {
   margin: 0;
   padding: 0;
@@ -337,7 +338,7 @@ h2{
 
 /* HomePage */
 .homePageContainer{
-  padding: 2%;
+  padding: 40px 6%;
 }
 .homePageImageContainer {
   position: relative;
@@ -366,7 +367,7 @@ h2{
 .homePageTextBanner{
   padding: 50px;
   position: absolute;
-  max-width: 30%;
+  max-width: 40%;
   top: 10%;
   color: white;
   z-index: 2;
@@ -459,6 +460,7 @@ h2{
    cursor: pointer;
    border: none;
 }
+
 /* footer */
 .footerContainer {
   background-color: #0e1a1d;
@@ -509,5 +511,94 @@ h2{
   text-align: center;
   padding: 10px 0;
   font-size: 0.9rem;
+}
+
+/* vinylcard */
+.homePageVinylCardContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
+.vinylCard {
+  
+  border-radius: 8px;
+  padding: 10px;
+  color: white;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.vinylCard:hover {
+  transform: scale(1.03);
+}
+
+.imgVinylCard {
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.vinylCard h5 {
+  margin: 8px 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.vinylCard p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+.vinylCard span {
+  margin-top: auto;
+  font-size: 16px;
+  font-weight: 700;
+  color: #17b0cf;
+}
+
+/* Artist of the month */
+.artistOfMonthContainer{
+  display: flex;
+   width: 100%;
+   border-radius: 20px;
+   margin: 40px 0px;
+    background-color: #1a2c30;
+}
+.aotmLeftSide{
+  flex: 1;
+}
+.aotmLeftSide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.aotmRightSide{
+  flex: 1;
+  padding: 60px;
+}
+.aotmRightSide h4{
+  color: #17b0cf;
+}
+.aotmRightSide h2{
+  color: white;
+}
+.aotmRightSide p{
+  color: gray;
+}
+.btnAofm{
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  background-color: white;
 }
 

@@ -1,6 +1,8 @@
 import React from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
+import VinylCard from "../features/vinyl/components/vinylCard";
+import ArtistOfMonth from "../features/vinyl/components/ArtistOfMonth";
 
 const genres = [
   "Rock",
@@ -19,6 +21,44 @@ const genres = [
   "Soundtracks",
   "Reggae",
   "Punk",
+];
+
+const vinylList = [
+  {
+    id: 1,
+    image: "https://picsum.photos/800/600",
+    title: "Retro Waves",
+    artist: "DJ Vintage",
+    price: "$29.99",
+  },
+  {
+    id: 2,
+    image: "https://images.pexels.com/photos/164853/pexels-photo-164853.jpeg",
+    title: "Vinyl Dreams",
+    artist: "Analog Soul",
+    price: "$24.99",
+  },
+  {
+    id: 3,
+    image: "https://picsum.photos/700/600",
+    title: "Groove Nights",
+    artist: "The Turntables",
+    price: "$27.50",
+  },
+  {
+    id: 4,
+    image: "https://picsum.photos/700/700",
+    title: "Soulful Spins",
+    artist: "Vinyl Collective",
+    price: "$32.00",
+  },
+  {
+    id: 5,
+    image: "https://picsum.photos/900/600",
+    title: "Soulful Spins",
+    artist: "Vinyl Collective",
+    price: "$32.00",
+  },
 ];
 
 const HomePage = () => {
@@ -63,8 +103,13 @@ const HomePage = () => {
             </buton>
           </div>
         </div>
-        <div></div>
+        <div className="homePageVinylCardContainer">
+          {vinylList.map((vinyl) => (
+            <VinylCard key={vinyl.id} vinyl={vinyl} />
+          ))}
+        </div>
       </div>
+      <ArtistOfMonth />
       <div className="homePageJoinContainer">
         <IoMdMail className="emailIcon" />
         <div>

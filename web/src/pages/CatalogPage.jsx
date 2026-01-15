@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge, Col, Form, Row } from "react-bootstrap";
-import { IoIosArrowDropdown } from "react-icons/io";
+import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
+import { useSearchParams } from "react-router";
 const genres = [
   "Rock",
   "Classic Rock",
@@ -58,32 +59,64 @@ const vinylList = [
   },
 ];
 const CatalogPage = () => {
+  const [modalGenre, setModalGenre] = useState(true);
+  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search") || "";
+
   return (
     <div className="catalogPageContainer">
       <Row>
         <Col md={2} className="filterCatalogContainer">
-          <div className="d-flex flex-column gap-2 pb-4">
+          <div className="d-flex flex-column gap-2 pb-4 border-bottom border-secondary">
             <h5>Broswe by</h5>
             <button className="btnFilterCatalogActive">All Records</button>
             <button className="btnFilterCatalog">New Arrivals</button>
             <button className="btnFilterCatalog">Sales</button>
           </div>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column border-bottom border-secondary py-4">
             <div className="d-flex align-items-center justify-content-between">
               <h5>Genre</h5>
-              <IoIosArrowDropdown className="drpDwnIcon" />
+              {modalGenre ? (
+                <IoIosArrowDropdown
+                  className="drpDwnIcon"
+                  onClick={() => setModalGenre((prev) => !prev)}
+                />
+              ) : (
+                <IoIosArrowDropleft
+                  className="drpDwnIcon"
+                  onClick={() => setModalGenre((prev) => !prev)}
+                />
+              )}
             </div>
-            <div className="menuItem d-flex flex-column">
-              {genres.map((genre) => (
-                <Form.Check label={genre} className="checkBox" />
-              ))}
-            </div>
+            {modalGenre && (
+              <div className="menuItem d-flex flex-column">
+                {genres.map((g) => (
+                  <Form.Check
+                    key={g}
+                    type="radio"
+                    name="genre"
+                    label={g}
+                    value={g}
+                    className="checkBox"
+                    checked={selectedGenre === g}
+                    onChange={() => setSelectedGenre(g)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="py-4 d-flex gap-3">
+            <Form.Check label="In Stock" className="checkBox" />
+            <Form.Check label="All Records" className="checkBox" />
           </div>
         </Col>
         <Col md={10}>
           <div className="d-flex gap-3 align-items-center">
-            <h4 className="m-0">Records</h4>
-            <p className="m-0">{vinylList.length} result</p>
+            <h4 className="m-0 text-white ">Records</h4>
+            <p className="m-0 text-secondary">({vinylList.length} result)</p>
           </div>
           <Row className="mt-4 g-4">
             {vinylList.map((vinyl) => (
@@ -92,6 +125,11 @@ const CatalogPage = () => {
               </Col>
             ))}
           </Row>
+          <div className="text-center">
+            <button disabled={!hasMore} className="btnLoadMore mt-3 px-4 py-2">
+              Load More Records
+            </button>
+          </div>
         </Col>
       </Row>
     </div>

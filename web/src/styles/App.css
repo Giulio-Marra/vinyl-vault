@@ -663,5 +663,16 @@ h2{
   background-color: #169db9; 
   border-color: #169db9;
 }
+.btnLoadMore{
+  background-color: #0e1a1d;
+  color: #169db9;
+  border: 1px solid #169db9;
+  border-radius: 6px;
+  outline: none;
+  box-shadow: none;
+}
+.btnLoadMore:hover{
+  background-color: #15282c;
+}
 
 

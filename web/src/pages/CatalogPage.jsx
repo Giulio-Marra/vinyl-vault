@@ -4,6 +4,7 @@ import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import { useSearchParams } from "react-router";
 const genres = [
+  "All",
   "Rock",
   "Classic Rock",
   "Jazz",
@@ -60,7 +61,7 @@ const vinylList = [
 ];
 const CatalogPage = () => {
   const [modalGenre, setModalGenre] = useState(true);
-  const [selectedGenre, setSelectedGenre] = useState(null);
+  const [selectedGenre, setSelectedGenre] = useState("All");
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [searchParams] = useSearchParams();

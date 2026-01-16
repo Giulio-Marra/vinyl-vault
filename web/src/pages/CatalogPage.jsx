@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Badge, Col, Form, Row } from "react-bootstrap";
+import { Badge, Col, Dropdown, Form, Row } from "react-bootstrap";
 import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import { useSearchParams } from "react-router";
@@ -30,6 +30,7 @@ const vinylList = [
     title: "Retro Waves",
     artist: "DJ Vintage",
     price: "$29.99",
+    inStock: 0,
   },
   {
     id: 2,
@@ -37,6 +38,7 @@ const vinylList = [
     title: "Vinyl Dreams",
     artist: "Analog Soul",
     price: "$24.99",
+    inStock: 2,
   },
   {
     id: 3,
@@ -44,6 +46,7 @@ const vinylList = [
     title: "Groove Nights",
     artist: "The Turntables",
     price: "$27.50",
+    inStock: 4,
   },
   {
     id: 4,
@@ -51,6 +54,7 @@ const vinylList = [
     title: "Soulful Spins",
     artist: "Vinyl Collective",
     price: "$32.00",
+    inStock: 0,
   },
   {
     id: 5,
@@ -58,13 +62,16 @@ const vinylList = [
     title: "Soulful Spins",
     artist: "Vinyl Collective",
     price: "$32.00",
+    inStock: 1,
   },
 ];
 const CatalogPage = () => {
   const [modalGenre, setModalGenre] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [valuePrice, setValuePrice] = useState([0, 1000]);
+  const [order, setOrder] = useState("ASC");
   const [page, setPage] = useState(0);
+  const [inStock, setInStock] = useState("All Records");
   const [hasMore, setHasMore] = useState(true);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
@@ -73,8 +80,12 @@ const CatalogPage = () => {
     setValuePrice(newValue);
   };
   function valuetext(valuePrice) {
-    return `${valuePrice}°C`;
+    return `${valuePrice}`;
   }
+
+  const sandFilter = () => {
+    // qui richiamo lapi passandogli i filtri per genere se e in sotock e per il range di prezzo
+  };
 
   return (
     <>
@@ -91,7 +102,7 @@ const CatalogPage = () => {
         <Row>
           <Col md={2} className="filterCatalogContainer">
             <div className="d-flex flex-column gap-2 pb-4 border-bottom border-secondary">
-              <h5>Broswe by</h5>
+              <h5>Browse by</h5>
               <button className="btnFilterCatalogActive">All Records</button>
               <button className="btnFilterCatalog">New Arrivals</button>
               <button className="btnFilterCatalog">Sales</button>
@@ -129,8 +140,22 @@ const CatalogPage = () => {
               )}
             </div>
             <div className="py-4 d-flex gap-3">
-              <Form.Check label="In Stock" className="checkBox" />
-              <Form.Check label="All Records" className="checkBox" />
+              <Form.Check
+                type="radio"
+                name="stock"
+                label="In Stock"
+                checked={inStock === "In Stock"}
+                onChange={() => setInStock("In Stock")}
+                className="checkBox"
+              />
+              <Form.Check
+                type="radio"
+                name="stock"
+                label="All Records"
+                checked={inStock === "All Records"}
+                onChange={() => setInStock("All Records")}
+                className="checkBox"
+              />
             </div>
             <div className="">
               <h5>Price Range</h5>
@@ -153,9 +178,37 @@ const CatalogPage = () => {
             </div>
           </Col>
           <Col md={10}>
-            <div className="d-flex gap-3 align-items-center">
-              <h4 className="m-0 text-white ">Records</h4>
-              <p className="m-0 text-secondary">({vinylList.length} result)</p>
+            <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex gap-3 align-items-center">
+                <h4 className="m-0 text-white ">Records</h4>
+                <p className="m-0 text-secondary">
+                  ({vinylList.length} result)
+                </p>
+              </div>
+              <div className="d-flex gap-3 align-items-center">
+                <p className="m-0 text-white">Sort by:</p>
+                <Dropdown>
+                  <Dropdown.Toggle className="drpDwnBtn">
+                    {order === "ASC" ? "Ascending price" : "Decreasing price"}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      active={order === "ASC"}
+                      onClick={() => setOrder("ASC")}
+                    >
+                      Ascending price
+                    </Dropdown.Item>
+
+                    <Dropdown.Item
+                      active={order === "DESC"}
+                      onClick={() => setOrder("DESC")}
+                    >
+                      Decreasing price
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
             </div>
             <Row className="mt-4 g-4">
               {vinylList.map((vinyl) => (

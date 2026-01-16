@@ -8,6 +8,7 @@ import "./styles/index.css";
 import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CatalogPage from "./pages/CatalogPage";
+import VinylDetailPage from "./pages/VinylDetailPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/catalog" element={<CatalogPage />} />
+          <Route path="/vinyl/:id" element={<VinylDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

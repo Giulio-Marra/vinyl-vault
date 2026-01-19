@@ -24,7 +24,7 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/catalog" element={<CatalogPage />} />
-          <Route path="/vinyl/:id" element={<VinylDetailPage />} />
+          <Route path="/vinyl/detail/:id" element={<VinylDetailPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -274,62 +274,87 @@ h2{
 }
 
 /* NavBar */
-.navBar{
-  display: flex;
-  background-color: #0e1a1d;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
+.navBar {
+  background-color: #0e1a1d !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.233);
+  padding: 10px 0;
 }
 
-.navBarSectionLogo{
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-.navBarSectionLogo h2{
-  color: white;
-}
-.navLink{
-  color: rgba(255, 255, 255, 0.678);
+.navLink {
+  color: rgba(255, 255, 255, 0.678) !important;
   text-decoration: none;
-  cursor: pointer;
-
+  padding: 0.5rem 1rem !important;
 }
-.searchBarNav{
+
+.navLink:hover {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.searchBarNav {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   background-color: #244147;
   padding: 6px 12px;
   border-radius: 6px;
   align-items: center;
   color: #81abb4;
+  flex: 1;
+  max-width: 300px;
 }
-.searchBarNav input{
-  background-color: #244147;
-   border: none;       
-  outline: none;     
-  box-shadow: none;   
-  font: inherit;     
-  color: #81abb4;     
-  
+
+.search-input {
+  background-color: #244147 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #81abb4 !important;
+  padding: 0 !important;
 }
-.navBarSectionRight{
-  display: flex;
-  gap: 12px;
+
+.search-input::placeholder {
+  color: #81abb4;
+  opacity: 0.7;
 }
-.btnNavBar{
-  padding: 10px;
- text-align: center;
- cursor: pointer;
+
+.search-input:focus {
+  background-color: #244147 !important;
+  color: #81abb4 !important;
+}
+
+.btnNavBar {
+  padding: 10px 12px;
+  text-align: center;
+  cursor: pointer;
   border-radius: 6px;
-   background-color: #244147;
-   color: white;
-    border: none;
-  outline: none;
-  box-shadow: none;
+  background-color: #244147 !important;
+  color: white !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.btnNavBar:hover {
+  background-color: #2d5159 !important;
+}
+
+/* Custom toggler icon */
+.navbar-toggler-icon-custom {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.8)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  display: inline-block;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+  .searchBarNav {
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
   
+  .navBar .container-fluid {
+    flex-wrap: wrap;
+  }
 }
 
 /* HomePage */

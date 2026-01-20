@@ -74,13 +74,13 @@ const VinylDetailPage = () => {
   return (
     <Container className="my-5">
       <Row>
-        <Col md={5} className="d-flex justify-content-center">
+        <Col lg={5} className="d-flex justify-content-center">
           <div className="vinylImgWrapper">
             <img src={vinyl.image} alt={vinyl.title} />
           </div>
         </Col>
 
-        <Col md={7} className="d-flex flex-column gap-3">
+        <Col lg={7} className="d-flex flex-column gap-3">
           <span className="genereSpan">{vinyl.genre}</span>
           <h1 className="text-white">{vinyl.title}</h1>
           <h5 className="detailArtistName">{vinyl.artist.name}</h5>
@@ -144,7 +144,7 @@ const VinylDetailPage = () => {
         </Col>
       </Row>
       <Row className="mt-5">
-        <Col md={9}>
+        <Col lg={9}>
           <div className="d-flex align-items-center gap-3">
             <BsMusicNoteList className="iconColor" />
             <h3 className="m-0 text-white"> TrackList</h3>
@@ -164,7 +164,7 @@ const VinylDetailPage = () => {
             ))}
           </div>
         </Col>
-        <Col md={3}>
+        <Col lg={3}>
           <div>
             <h3 className="m-0 text-white">About the Artist</h3>
           </div>

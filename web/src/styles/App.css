@@ -358,129 +358,234 @@ h2{
 }
 
 /* HomePage */
-.homePageContainer{
-  padding: 40px 6%;
+.homePageContainer {
+  padding: 40px 0;
   background-color: #0e1a1d;
+  min-height: 100vh;
 }
+
 .homePageImageContainer {
   position: relative;
   height: 500px;
   width: 100%;
   overflow: hidden;
   border-radius: 20px;
+  margin-bottom: 3rem;
 }
 
 .imageHomePage {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position:center;
+  object-position: center;
 }
+
 .imageFadeOverlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(14, 26, 29, 1),
-    rgba(14, 26, 29, 0)
+    rgba(14, 26, 29, 1) 0%,
+    rgba(14, 26, 29, 0.7) 50%,
+    rgba(14, 26, 29, 0) 100%
   );
   pointer-events: none;
 }
-.homePageTextBanner{
-  padding: 50px;
+
+.homePageTextBanner {
+  padding: 30px;
   position: absolute;
-  max-width: 40%;
-  top: 10%;
+  max-width: 90%;
+  top: 50%;
+  transform: translateY(-50%);
   color: white;
   z-index: 2;
-  
-}
-.homePageTextBanner h1{
-  font-size: 8vh;
-  margin: 0;
-}
-.homePageTextBanner h1 span{
-    display: block;
-    color: #17b0cf;
-}
-.homePageTextBanner p{
-  color: rgb(179, 179, 179);
-  font-size: 2vh;
 }
 
-.btnViewCollectionHomePage{
-   border-radius: 10px;
-   padding: 15px 30px;
-   background-color: #17b0cf;
-   font-size: 2vh;
-   cursor: pointer;
-   border: none;
+.homePageTextBanner h1 {
+  font-size: clamp(2rem, 6vw, 5rem);
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
 }
-.genreMenu{
-  color: white;
+
+.homePageTextBanner h1 span {
+  display: block;
+  color: #17b0cf;
 }
-.btnGenre{
-  padding: 13px 26px;
-  font-size: 1.6vh;
-  margin: 0px 3px;
-  border-radius: 6px;
-  background-color: #1a2c30;
-  color: white;
+
+.homePageTextBanner p {
+  color: rgb(179, 179, 179);
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  margin-bottom: 1.5rem;
+  max-width: 500px;
+}
+
+.btnViewCollectionHomePage {
+  border-radius: 10px;
+  padding: 15px 30px;
+  background-color: #17b0cf !important;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   cursor: pointer;
-  border: none;
-  outline: none;
-  box-shadow: none;
+  border: none !important;
+  font-weight: 600;
+  transition: background-color 0.3s;
 }
-.homePageFeaturedRecords{
-  margin-top: 40px;
+
+.btnViewCollectionHomePage:hover {
+  background-color: #1399b8 !important;
 }
-.homePageFeaturedRecordsTit{
+
+.genreMenu {
+  color: white;
+  margin-top: 3rem;
+}
+
+.genreMenu h2 {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.btnGenre {
+  padding: 13px 26px;
+  font-size: clamp(0.8rem, 1.6vw, 1rem);
+  border-radius: 6px;
+  background-color: #1a2c30 !important;
+  color: white !important;
+  cursor: pointer;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: background-color 0.3s;
+}
+
+.btnGenre:hover {
+  background-color: #244147 !important;
+}
+
+.homePageFeaturedRecords {
+  margin-top: 4rem;
+}
+
+.homePageFeaturedRecordsTit {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
-.homePageFeaturedRecordsTit h2{
+
+.homePageFeaturedRecordsTit h2 {
   margin: 0;
   color: white;
+  font-size: clamp(1.5rem, 4vw, 2rem);
 }
-.homePageJoinContainer{
+
+.homePageVinylCardContainer {
+  margin-top: 1rem;
+}
+
+.homePageJoinContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #1a2c30;
   border-radius: 20px;
- gap: 20px;
- text-align: center;
- padding: 80px;
+  gap: 20px;
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 4rem;
 }
-.homePageJoinContainer h2{
-  font-size: 2em;
+
+.homePageJoinContainer h2 {
+  font-size: clamp(1.5rem, 4vw, 2em);
   color: white;
+  margin-bottom: 0;
 }
-.homePageJoinContainer p{
+
+.homePageJoinContainer p {
   color: gray;
+  max-width: 600px;
+  font-size: clamp(0.9rem, 2vw, 1rem);
 }
-.emailIcon{
-  font-size: 4em;
+
+.emailIcon {
+  font-size: clamp(3rem, 6vw, 4em);
   color: #17b0cf;
 }
-.inptSubscribe{
-  width: 300px;
-  margin-right: 6px;
+
+.inptSubscribe {
+  width: 100%;
+  max-width: 300px;
   padding: 12px;
   border-radius: 6px;
-  background-color: #0e1a1d;
-   border: none;       
-  outline: none;     
-  box-shadow: none;
-  color: gray;   
+  background-color: #0e1a1d !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: gray !important;
 }
-.btnSubscribe{
+
+.inptSubscribe::placeholder {
+  color: gray;
+}
+
+.inptSubscribe:focus {
+  background-color: #0e1a1d !important;
+  color: gray !important;
+}
+
+.btnSubscribe {
   border-radius: 10px;
-   padding: 12px 30px;
-   background-color: #17b0cf;
-   cursor: pointer;
-   border: none;
+  padding: 12px 30px;
+  background-color: #17b0cf !important;
+  cursor: pointer;
+  border: none !important;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.btnSubscribe:hover {
+  background-color: #1399b8 !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .homePageContainer {
+    padding: 20px 0;
+  }
+
+  .homePageImageContainer {
+    height: 400px;
+  }
+
+  .homePageTextBanner {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .imageFadeOverlay {
+    background: linear-gradient(
+      to top,
+      rgba(14, 26, 29, 1) 0%,
+      rgba(14, 26, 29, 0.5) 50%,
+      rgba(14, 26, 29, 0) 100%
+    );
+  }
+
+  .homePageJoinContainer {
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .homePageImageContainer {
+    height: 300px;
+  }
+
+  .homePageTextBanner {
+    top: auto;
+    bottom: 20px;
+    transform: none;
+  }
 }
 
 /* footer */
@@ -586,43 +691,71 @@ h2{
 }
 
 /* Artist of the month */
-.artistOfMonthContainer{
-  display: flex;
-   width: 100%;
-   border-radius: 20px;
-   margin: 40px 0px;
-    background-color: #1a2c30;
+.artistOfMonthContainer {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  background-color: #1a2c30;
+  border-radius: 20px;
+  overflow: hidden;
 }
-.aotmLeftSide{
-  flex: 1;
+
+.aotmLeftSide {
+  min-height: 400px;
 }
+
 .aotmLeftSide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-bottom-left-radius: 20px;
-  border-top-left-radius: 20px;
 }
 
-.aotmRightSide{
-  flex: 1;
-  padding: 60px;
-}
-.aotmRightSide h4{
-  color: #17b0cf;
-}
-.aotmRightSide h2{
+.aotmRightSide {
+  padding: 40px;
   color: white;
 }
-.aotmRightSide p{
-  color: gray;
+
+.aotmRightSide h4 {
+  color: #17b0cf;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
 }
-.btnAofm{
-  padding: 10px;
-  border-radius: 6px;
+
+.aotmRightSide h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 1.5rem;
+}
+
+.aotmRightSide p {
+  color: rgb(179, 179, 179);
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.btnAofm {
+  border-radius: 10px;
+  padding: 12px 30px;
+  background-color: #17b0cf !important;
   cursor: pointer;
-  border: none;
-  background-color: white;
+  border: none !important;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.btnAofm:hover {
+  background-color: #1399b8 !important;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .aotmLeftSide {
+    min-height: 300px;
+  }
+
+  .aotmRightSide {
+    padding: 30px 20px;
+  }
 }
 /* Catalog Page */
 .catalogPageContainer{

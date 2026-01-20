@@ -3,6 +3,7 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import ArtistOfMonth from "../features/vinyl/components/ArtistOfMonth";
+import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 const genres = [
   "Rock",
@@ -52,82 +53,72 @@ const vinylList = [
     artist: "Vinyl Collective",
     price: "$32.00",
   },
-  {
-    id: 5,
-    image: "https://picsum.photos/900/600",
-    title: "Soulful Spins",
-    artist: "Vinyl Collective",
-    price: "$32.00",
-  },
 ];
 
 const HomePage = () => {
   return (
     <div className="homePageContainer">
-      <div className="homePageImageContainer">
-        <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKNN_OiC_dD6gFCUrXKZPY-iBUlDvTWyTFWLVTLBfpgd6qGVcPH32voM3m5lfAfReh8oH_oFXEGDFc3BrOShU3abWWrplOCmz0v6k-JtbMA3qelR_1tMfMaVmar7fHPXGIzjdaGPSthG1YfyqpUNiyJOrG0ib7kKx6oLfRrxw-B7xfI_O9FmyDEeObOxOYeS9CtGMx8iI5_dpDwBxuL8rHYPbIyvWBLOkHlMVPWMe1OPT6f1vvhcBh0CxyfG4a1F8xBdOKNQtdEvTN"
-          alt="image"
-          className="imageHomePage"
-        />
-        <div className="imageFadeOverlay"></div>
-        <div className="homePageTextBanner">
-          <h1>
-            Rediscover the <span> Analog Sound</span>
-          </h1>
-          <p>
-            The best collection of vintage and modern vinyl, curated for the
-            true audiophile. Free shipping on orders over $50.
-          </p>
-
-          <button className="btnViewCollectionHomePage">
-            View Collections
-          </button>
-        </div>
-      </div>
-      <div className="genreMenu">
-        <h2>Browse by Genre</h2>
-        {genres.map((genre) => (
-          <button className="btnGenre">{genre}</button>
-        ))}
-      </div>
-      <div className="homePageFeaturedRecords">
-        <div className="homePageFeaturedRecordsTit">
-          <h2>Featured Records</h2>
-          <div>
-            <buton>
-              <FaArrowLeft />
-            </buton>
-            <buton>
-              <FaArrowRight />
-            </buton>
+      <Container>
+        <div className="homePageImageContainer">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKNN_OiC_dD6gFCUrXKZPY-iBUlDvTWyTFWLVTLBfpgd6qGVcPH32voM3m5lfAfReh8oH_oFXEGDFc3BrOShU3abWWrplOCmz0v6k-JtbMA3qelR_1tMfMaVmar7fHPXGIzjdaGPSthG1YfyqpUNiyJOrG0ib7kKx6oLfRrxw-B7xfI_O9FmyDEeObOxOYeS9CtGMx8iI5_dpDwBxuL8rHYPbIyvWBLOkHlMVPWMe1OPT6f1vvhcBh0CxyfG4a1F8xBdOKNQtdEvTN"
+            alt="image"
+            className="imageHomePage"
+          />
+          <div className="imageFadeOverlay"></div>
+          <div className="homePageTextBanner">
+            <h1>
+              Rediscover the <span>Analog Sound</span>
+            </h1>
+            <p>
+              The best collection of vintage and modern vinyl, curated for the
+              true audiophile. Free shipping on orders over $50.
+            </p>
+            <Button className="btnViewCollectionHomePage">
+              View Collections
+            </Button>
           </div>
         </div>
-        <div className="homePageVinylCardContainer">
-          {vinylList.map((vinyl) => (
-            <VinylCard key={vinyl.id} vinyl={vinyl} />
-          ))}
+        <div className="genreMenu mt-5">
+          <h2 className="mb-3">Browse by Genre</h2>
+          <div className="d-flex flex-wrap gap-2">
+            {genres.map((genre, index) => (
+              <Button key={index} className="btnGenre">
+                {genre}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
-      <ArtistOfMonth />
-      <div className="homePageJoinContainer">
-        <IoMdMail className="emailIcon" />
-        <div>
-          <h2>Join the VinylVault Club</h2>
-          <p>
-            Get 10% off your first order, exclusive access to limited drops, and
-            weekly curated playlists.
-          </p>
+        <div className="homePageFeaturedRecords">
+          <div className="homePageFeaturedRecordsTit">
+            <h2>Featured Records</h2>
+          </div>
+          <div className="homePageVinylCardContainer">
+            {vinylList.map((vinyl) => (
+              <VinylCard key={vinyl.id} vinyl={vinyl} />
+            ))}
+          </div>
         </div>
-        <form>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="inptSubscribe"
-          />
-          <button className="btnSubscribe">Subscribe</button>
-        </form>
-      </div>
+        <ArtistOfMonth />
+        <div className="homePageJoinContainer">
+          <IoMdMail className="emailIcon" />
+          <div>
+            <h2>Join the VinylVault Club</h2>
+            <p className="mb-4">
+              Get 10% off your first order, exclusive access to limited drops,
+              and weekly curated playlists.
+            </p>
+          </div>
+          <Form className="d-flex flex-column flex-md-row gap-2 w-100 justify-content-center">
+            <Form.Control
+              type="email"
+              placeholder="Enter your email"
+              className="inptSubscribe"
+            />
+            <Button className="btnSubscribe">Subscribe</Button>
+          </Form>
+        </div>
+      </Container>
     </div>
   );
 };

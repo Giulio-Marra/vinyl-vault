@@ -40,7 +40,7 @@ public class PublicVinylController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Boolean inStock,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "asc") String sortByPrice
     ) {
         Sort sort = sortByPrice.equalsIgnoreCase("desc")

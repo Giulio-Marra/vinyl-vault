@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Col, Dropdown, Form, Row } from "react-bootstrap";
 import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import { useSearchParams } from "react-router";
 import { Slider } from "@mui/material";
+import { getVinylsByQuery } from "../features/vinyl/services/apiVinylService";
+import { ScaleLoader } from "react-spinners";
 const genres = [
   "All",
   "Rock",
@@ -23,48 +25,7 @@ const genres = [
   "Reggae",
   "Punk",
 ];
-const vinylList = [
-  {
-    id: 1,
-    image: "https://picsum.photos/800/600",
-    title: "Retro Waves",
-    artist: "DJ Vintage",
-    price: "$29.99",
-    inStock: 0,
-  },
-  {
-    id: 2,
-    image: "https://images.pexels.com/photos/164853/pexels-photo-164853.jpeg",
-    title: "Vinyl Dreams",
-    artist: "Analog Soul",
-    price: "$24.99",
-    inStock: 2,
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/700/600",
-    title: "Groove Nights",
-    artist: "The Turntables",
-    price: "$27.50",
-    inStock: 4,
-  },
-  {
-    id: 4,
-    image: "https://picsum.photos/700/700",
-    title: "Soulful Spins",
-    artist: "Vinyl Collective",
-    price: "$32.00",
-    inStock: 0,
-  },
-  {
-    id: 5,
-    image: "https://picsum.photos/900/600",
-    title: "Soulful Spins",
-    artist: "Vinyl Collective",
-    price: "$32.00",
-    inStock: 1,
-  },
-];
+
 const CatalogPage = () => {
   const [modalGenre, setModalGenre] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState("All");
@@ -75,6 +36,52 @@ const CatalogPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search") || "";
+  const [vinylList, setVinylList] = useState([]);
+  const [totalVinyls, setTotalVinyls] = useState(0);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const fetchVinyls = async (pageNum = 0) => {
+    setIsLoading(true);
+    try {
+      const data = await getVinylsByQuery({
+        query: searchQuery,
+        minPrice: valuePrice[0],
+        maxPrice: valuePrice[1],
+        inStock: inStock === "In Stock" ? true : undefined,
+        page: pageNum,
+        size: 8,
+        sortByPrice: order.toLowerCase(),
+      });
+
+      if (pageNum === 0) {
+        setVinylList(data.content);
+      } else {
+        setVinylList((prevList) => [...prevList, ...data.content]);
+      }
+
+      setTotalVinyls(data.totalElements);
+      setHasMore(data.last);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    setPage(0);
+    fetchVinyls(0);
+  }, [searchQuery, valuePrice, inStock, order]);
+
+  useEffect(() => {
+    if (page > 0) {
+      fetchVinyls(page);
+    }
+  }, [page]);
+
+  const loadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   const handleChangePriceValue = (e, newValue = []) => {
     setValuePrice(newValue);
@@ -82,10 +89,6 @@ const CatalogPage = () => {
   function valuetext(valuePrice) {
     return `${valuePrice}`;
   }
-
-  const sandFilter = () => {
-    // qui richiamo lapi passandogli i filtri per genere se e in sotock e per il range di prezzo
-  };
 
   return (
     <>
@@ -181,9 +184,7 @@ const CatalogPage = () => {
             <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex gap-3 align-items-center">
                 <h4 className="m-0 text-white ">Records</h4>
-                <p className="m-0 text-secondary">
-                  ({vinylList.length} result)
-                </p>
+                <p className="m-0 text-secondary">({totalVinyls} result)</p>
               </div>
               <div className="d-flex gap-3 align-items-center">
                 <p className="m-0 text-white">Sort by:</p>
@@ -210,21 +211,60 @@ const CatalogPage = () => {
                 </Dropdown>
               </div>
             </div>
-            <Row className="mt-4 g-4">
-              {vinylList.map((vinyl) => (
-                <Col key={vinyl.id} xs={12} sm={6} md={4} lg={3}>
-                  <VinylCard vinyl={vinyl} />
-                </Col>
-              ))}
-            </Row>
-            <div className="text-center">
-              <button
-                disabled={!hasMore}
-                className="btnLoadMore mt-3 px-4 py-2"
+            {isLoading && page === 0 ? (
+              <div
+                className="d-flex justify-content-center align-items-center"
+                style={{ minHeight: "400px" }}
               >
-                Load More Records
-              </button>
-            </div>
+                <ScaleLoader color="#169db9" height={"50px"} width={"5px"} />
+              </div>
+            ) : vinylList.length === 0 ? (
+              <div
+                className="text-center"
+                style={{
+                  minHeight: "400px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                }}
+              >
+                <h5 className="text-secondary mb-3">No records found</h5>
+                <p className="text-muted">
+                  Try adjusting your filters or search query
+                </p>
+              </div>
+            ) : (
+              <>
+                <Row className="mt-4 g-4">
+                  {vinylList.map((vinyl) => (
+                    <Col key={vinyl.id} xs={12} sm={6} md={4} lg={3}>
+                      <VinylCard vinyl={vinyl} />
+                    </Col>
+                  ))}
+                </Row>
+                <div className="text-center mt-4">
+                  {hasMore ? (
+                    <p className="text-secondary">No more records to load</p>
+                  ) : isLoading ? (
+                    <div className="d-flex justify-content-center">
+                      <ScaleLoader
+                        color="#169db9"
+                        height={"20px"}
+                        width={"3px"}
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      className="btnLoadMore mt-3 px-4 py-2"
+                      onClick={loadMore}
+                    >
+                      Load More Records
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
           </Col>
         </Row>
       </div>

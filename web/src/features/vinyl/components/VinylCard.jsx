@@ -9,12 +9,12 @@ const VinylCard = ({ vinyl }) => {
       onClick={() => navigate(`/vinyl/detail/${vinyl.id}`)}
     >
       <div className="imgWrapper">
-        <img src={vinyl.image} alt={vinyl.title} className="imgVinylCard" />
-        {vinyl.inStock <= 0 && <span className="soldOutSpan">Sold Out</span>}
+        <img src={vinyl.urlImage} alt={vinyl.title} className="imgVinylCard" />
+        {vinyl.stock <= 0 && <span className="soldOutSpan">Sold Out</span>}
       </div>
 
       <h5>{vinyl.title}</h5>
-      <p>{vinyl.artist}</p>
+      <p>{vinyl.artist.name}</p>
       <span>{vinyl.price}</span>
     </div>
   );

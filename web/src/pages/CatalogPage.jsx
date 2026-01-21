@@ -4,29 +4,14 @@ import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import { useSearchParams } from "react-router";
 import { Slider } from "@mui/material";
-import { getVinylsByQuery } from "../features/vinyl/services/apiVinylService";
+import {
+  getAllGenres,
+  getVinylsByQuery,
+} from "../features/vinyl/services/apiVinylService";
 import { ScaleLoader } from "react-spinners";
-const genres = [
-  "All",
-  "Rock",
-  "Classic Rock",
-  "Jazz",
-  "Blues",
-  "Soul",
-  "Funk",
-  "Disco",
-  "Hip Hop",
-  "Electronic",
-  "House",
-  "Techno",
-  "Ambient",
-  "Classical",
-  "Soundtracks",
-  "Reggae",
-  "Punk",
-];
 
 const CatalogPage = () => {
+  const [genres, setGenres] = useState([{ id: 121, name: "All" }]);
   const [modalGenre, setModalGenre] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [valuePrice, setValuePrice] = useState([0, 1000]);
@@ -49,6 +34,7 @@ const CatalogPage = () => {
         minPrice: valuePrice[0],
         maxPrice: valuePrice[1],
         inStock: inStock === "In Stock" ? true : undefined,
+        genre: selectedGenre !== "All" ? selectedGenre : undefined,
         page: pageNum,
         size: 8,
         sortByPrice: order.toLowerCase(),
@@ -68,16 +54,28 @@ const CatalogPage = () => {
       setIsLoading(false);
     }
   };
+
+  const fetchGenres = async () => {
+    try {
+      const data = await getAllGenres();
+      setGenres([{ id: 121, name: "All" }, ...data]);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   useEffect(() => {
     setPage(0);
     fetchVinyls(0);
-  }, [searchQuery, valuePrice, inStock, order]);
+    fetchGenres();
+  }, [searchQuery, valuePrice, inStock, order, selectedGenre]);
 
   useEffect(() => {
     if (page > 0) {
       fetchVinyls(page);
     }
   }, [page]);
+
+  console.log(genres);
 
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -127,16 +125,16 @@ const CatalogPage = () => {
               </div>
               {modalGenre && (
                 <div className="menuItem d-flex flex-column">
-                  {genres.map((g) => (
+                  {genres.map((genre) => (
                     <Form.Check
-                      key={g}
+                      key={genre.id}
                       type="radio"
                       name="genre"
-                      label={g}
-                      value={g}
+                      label={genre.name}
+                      value={genre.name}
                       className="checkBox"
-                      checked={selectedGenre === g}
-                      onChange={() => setSelectedGenre(g)}
+                      checked={selectedGenre === genre.name}
+                      onChange={() => setSelectedGenre(genre.name)}
                     />
                   ))}
                 </div>

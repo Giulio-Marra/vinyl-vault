@@ -6,8 +6,6 @@ import giuliomarra.vinylvault.service.GenreService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/genre")
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -24,10 +22,6 @@ public class GenreController {
         return genreService.saveNewGenre(body);
     }
 
-    @GetMapping
-    public List<Genre> getAllGenres() {
-        return genreService.getAllGenres();
-    }
 
     @GetMapping("/{id}")
     public Genre getGenreById(@PathVariable Long id) {

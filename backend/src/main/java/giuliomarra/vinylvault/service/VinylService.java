@@ -152,15 +152,16 @@ public class VinylService {
         vinylRepository.deleteById(id);
     }
 
-    
+
     public Page<VinylResponseDto> searchVinyls(
             String query,
             Double minPrice,
             Double maxPrice,
             Boolean inStock,
+            String genre,
             Pageable pageable) {
 
-        return vinylRepository.searchVinyls(query, minPrice, maxPrice, inStock, pageable)
+        return vinylRepository.searchVinyls(query, minPrice, maxPrice, inStock, genre, pageable)
                 .map(vinyl -> {
                     List<Track> tracks = trackRepository.findByVinylId(vinyl.getId());
                     return convertToDto(vinyl, tracks);

@@ -39,6 +39,7 @@ public class PublicVinylController {
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(required = false) Boolean inStock,
+            @RequestParam(required = false, defaultValue = "All") String genre,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "asc") String sortByPrice
@@ -47,7 +48,7 @@ public class PublicVinylController {
                 ? Sort.by("price").descending()
                 : Sort.by("price").ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return vinylService.searchVinyls(query, minPrice, maxPrice, inStock, pageable);
+        return vinylService.searchVinyls(query, minPrice, maxPrice, inStock, genre, pageable);
     }
 
 

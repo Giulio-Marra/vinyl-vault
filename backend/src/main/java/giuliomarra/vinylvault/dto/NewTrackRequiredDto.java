@@ -4,6 +4,6 @@ public record NewTrackRequiredDto(
         String title,
         Integer trackNumber,
         String side,
-        Double duration
+        String duration
 ) {
 }

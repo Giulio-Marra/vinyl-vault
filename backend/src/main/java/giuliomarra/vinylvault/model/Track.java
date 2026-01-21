@@ -11,7 +11,7 @@ public class Track {
     private String title;
     private Integer trackNumber;
     private String side;
-    private Double duration;
+    private String duration;
 
     @ManyToOne
     @JoinColumn(name = "vinyl_id", nullable = false)
@@ -20,7 +20,7 @@ public class Track {
     public Track() {
     }
 
-    public Track(String title, Integer trackNumber, String side, Double duration, Vinyl vinyl) {
+    public Track(String title, Integer trackNumber, String side, String duration, Vinyl vinyl) {
         this.title = title;
         this.trackNumber = trackNumber;
         this.side = side;
@@ -60,11 +60,11 @@ public class Track {
         this.side = side;
     }
 
-    public Double getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Double duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 

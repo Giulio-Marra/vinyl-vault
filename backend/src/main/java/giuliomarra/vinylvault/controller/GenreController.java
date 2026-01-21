@@ -3,12 +3,14 @@ package giuliomarra.vinylvault.controller;
 import giuliomarra.vinylvault.dto.NewGenreRequiredDto;
 import giuliomarra.vinylvault.model.Genre;
 import giuliomarra.vinylvault.service.GenreService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/genre")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class GenreController {
 
     private final GenreService genreService;

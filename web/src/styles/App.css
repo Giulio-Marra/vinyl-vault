@@ -962,6 +962,7 @@ h2{
 }
 .imgArtist{
   width: 60px;
+  height: 60px;
   border-radius: 500%;
 }
 .containerAboutArtist{

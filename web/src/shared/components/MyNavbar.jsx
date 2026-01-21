@@ -9,11 +9,14 @@ import {
 } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUser, FaMagnifyingGlass } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 
 const MyNavbar = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
+  const cart = useSelector((state) => state.cart);
+  const totalItems = cart.vinyl.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -56,8 +59,13 @@ const MyNavbar = () => {
               <FaUser />
             </Button>
 
-            <Button className="btnNavBar">
+            <Button className="btnNavBar position-relative">
               <FaShoppingCart />
+              {totalItems > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {totalItems}
+                </span>
+              )}
             </Button>
           </div>
         </Navbar.Collapse>

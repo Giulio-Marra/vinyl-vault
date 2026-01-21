@@ -5,7 +5,9 @@ import { BsMusicNoteList } from "react-icons/bs";
 import { FaTruck } from "react-icons/fa";
 import { IoIosLock, IoMdCart } from "react-icons/io";
 import { MdAssignmentReturn } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { addProduct } from "../features/cart/redux/cartSlice";
 const vinyl = {
   id: 2,
   image: "https://images.pexels.com/photos/164853/pexels-photo-164853.jpeg",
@@ -58,6 +60,12 @@ const vinyl = {
 const VinylDetailPage = () => {
   const { id } = useParams();
   const [quantityToAdd, setQuantityToAdd] = useState(1);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    const vinylToAdd = { ...vinyl, quantity: quantityToAdd };
+    dispatch(addProduct(vinylToAdd));
+  };
 
   const handleChangeQuantity = (decrease = false) => {
     if (decrease) {
@@ -113,7 +121,10 @@ const VinylDetailPage = () => {
                 </button>
               </div>
 
-              <button className="btnAddCart d-flex align-items-center gap-2">
+              <button
+                className="btnAddCart d-flex align-items-center gap-2"
+                onClick={handleAddToCart}
+              >
                 <IoMdCart />
                 Add to Cart
               </button>

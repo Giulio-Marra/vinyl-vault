@@ -35,3 +35,23 @@ export async function registerService({ username, email, password }) {
   const data = await response.json();
   return data;
 }
+
+export async function getMyProfile(token) {
+  const response = await fetch(`${BASE_URL}/user/me`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    const error = new Error(errData.message || "Failed to fetch profile");
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+  return data;
+}

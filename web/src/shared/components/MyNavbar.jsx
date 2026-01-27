@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Nav,
@@ -9,19 +9,26 @@ import {
 } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUser, FaMagnifyingGlass } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
+import { getUserAction } from "../../features/auth/redux/authTunks";
 
 const MyNavbar = () => {
+  const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.auth.user);
   const totalItems = cart.vinyl.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     navigate(`/catalog?search=${query}`);
   };
+
+  useEffect(() => {
+    dispatch(getUserAction());
+  }, [dispatch]);
 
   return (
     <Navbar expand="lg" className="navBar">
@@ -55,9 +62,18 @@ const MyNavbar = () => {
               />
             </Form>
 
-            <Button className="btnNavBar">
-              <FaUser />
-            </Button>
+            {user ? (
+              <Button
+                className="btnNavBar"
+                onClick={() => navigate("/profile")}
+              >
+                <FaUser />
+              </Button>
+            ) : (
+              <Button className="btnNavBar" onClick={() => navigate("/login")}>
+                Login
+              </Button>
+            )}
 
             <Button className="btnNavBar position-relative">
               <FaShoppingCart />

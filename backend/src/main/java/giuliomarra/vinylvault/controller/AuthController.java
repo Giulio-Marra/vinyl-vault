@@ -30,4 +30,6 @@ public class AuthController {
     public ResponseEntity<TokenResponseDto> login(@RequestBody @Validated UserLoginRequiredDto body) {
         return ResponseEntity.ok(userService.login(body));
     }
+
+
 }

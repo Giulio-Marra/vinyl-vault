@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Button } from "react-bootstrap";
 import { AiFillSafetyCertificate } from "react-icons/ai";
 import { BsMusicNoteList } from "react-icons/bs";
-import { FaTruck } from "react-icons/fa";
+import { FaTruck, FaArrowLeft } from "react-icons/fa";
 import { IoIosLock, IoMdCart } from "react-icons/io";
 import { MdAssignmentReturn } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { addProduct } from "../features/cart/redux/cartSlice";
 import { getVinylById } from "../features/vinyl/services/apiVinylService";
 import { ScaleLoader } from "react-spinners";
 
 const VinylDetailPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [vinyl, setVinyl] = useState({});
   const [quantityToAdd, setQuantityToAdd] = useState(1);
@@ -45,13 +46,35 @@ const VinylDetailPage = () => {
         const data = await getVinylById(id);
         setVinyl(data);
       } catch (error) {
+        if (!error.status) {
+          navigate("/error", {
+            state: {
+              statusCode: "Connection Error",
+              message: "Cannot reach server. Please check your connection.",
+            },
+          });
+        } else if (error.status >= 500) {
+          navigate("/error", {
+            state: {
+              statusCode: error.status,
+              message: "Server error. Please try again later.",
+            },
+          });
+        } else if (error.status === 404) {
+          navigate("/error", {
+            state: {
+              statusCode: 404,
+              message: "Vinyl not found.",
+            },
+          });
+        }
         console.error(error);
       } finally {
         setIsLoading(false);
       }
     };
     fetchVinylById(id);
-  }, [id]);
+  }, [id, navigate]);
 
   if (isLoading) {
     return (
@@ -63,6 +86,14 @@ const VinylDetailPage = () => {
 
   return (
     <Container className="my-5">
+      <Button
+        variant="link"
+        className="mb-3 p-0 d-flex align-items-center gap-2 text-decoration-none"
+        onClick={() => navigate(-1)}
+        style={{ color: "#169db9" }}
+      >
+        <FaArrowLeft /> Back
+      </Button>
       <Row>
         <Col lg={5} className="d-flex justify-content-center">
           <div className="vinylImgWrapper">

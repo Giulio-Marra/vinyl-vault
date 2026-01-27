@@ -9,9 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface VinylRepository extends JpaRepository<Vinyl, Long> {
     boolean existsByTitleIgnoreCaseAndArtist(String title, Artist artist);
+
+    List<Vinyl> findTop4ByOrderByIdDesc();
+
 
     @Query("SELECT DISTINCT v FROM Vinyl v " +
             "LEFT JOIN v.artist a " +

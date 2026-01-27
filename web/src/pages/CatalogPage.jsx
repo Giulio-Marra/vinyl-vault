@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Badge, Col, Dropdown, Form, Row } from "react-bootstrap";
 import { IoIosArrowDropdown, IoIosArrowDropleft } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
 import { Slider } from "@mui/material";
 import {
   getAllGenres,
@@ -11,6 +11,7 @@ import {
 import { ScaleLoader } from "react-spinners";
 
 const CatalogPage = () => {
+  const navigate = useNavigate();
   const [genres, setGenres] = useState([{ id: 121, name: "All" }]);
   const [modalGenre, setModalGenre] = useState(true);
   const [selectedGenre, setSelectedGenre] = useState("All");
@@ -49,7 +50,23 @@ const CatalogPage = () => {
       setTotalVinyls(data.totalElements);
       setHasMore(data.last);
     } catch (err) {
-      setError(err.message);
+      if (!err.status) {
+        navigate("/error", {
+          state: {
+            statusCode: "Connection Error",
+            message: "Cannot reach server. Please check your connection.",
+          },
+        });
+      } else if (err.status >= 500) {
+        navigate("/error", {
+          state: {
+            statusCode: err.status,
+            message: "Server error. Please try again later.",
+          },
+        });
+      } else {
+        setError(err.message || "Failed to load records");
+      }
     } finally {
       setIsLoading(false);
     }

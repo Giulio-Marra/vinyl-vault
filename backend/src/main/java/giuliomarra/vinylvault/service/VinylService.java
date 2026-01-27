@@ -180,4 +180,16 @@ public class VinylService {
         List<Track> tracks = trackRepository.findByVinylId(id);
         return convertToDto(updatedVinyl, tracks);
     }
+
+    public List<VinylResponseDto> getLatestVinyls() {
+        return vinylRepository.findTop4ByOrderByIdDesc()
+                .stream()
+                .map(vinyl -> {
+                    List<Track> tracks = trackRepository.findByVinylId(vinyl.getId());
+                    return convertToDto(vinyl, tracks);
+                })
+                .toList();
+    }
+
+
 }

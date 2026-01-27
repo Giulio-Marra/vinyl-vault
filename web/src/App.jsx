@@ -9,11 +9,15 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import CatalogPage from "./pages/CatalogPage";
 import VinylDetailPage from "./pages/VinylDetailPage";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Error page */}
+        <Route path="/error" element={<ErrorPage />} />
+
         {/* Rotte di autentificazione*/}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

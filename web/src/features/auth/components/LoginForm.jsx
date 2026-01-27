@@ -23,7 +23,8 @@ const LoginForm = () => {
         email,
         password,
         remember,
-      })
+        navigate,
+      }),
     );
   };
 

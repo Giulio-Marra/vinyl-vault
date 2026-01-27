@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../../app/config";
+
 export const getVinylsByQuery = async ({
   query = "",
   minPrice,
@@ -21,15 +23,16 @@ export const getVinylsByQuery = async ({
     if (sortByPrice) params.append("sortByPrice", sortByPrice);
 
     const response = await fetch(
-      `http://localhost:3001/api/vinyl/search?${params.toString()}`,
+      `${BASE_URL}/api/vinyl/search?${params.toString()}`,
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch vinyls");
+      const error = new Error("Failed to fetch vinyls");
+      error.status = response.status;
+      throw error;
     }
 
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error(error);
     throw error;
@@ -38,12 +41,15 @@ export const getVinylsByQuery = async ({
 
 export const getAllGenres = async () => {
   try {
-    const response = await fetch(`http://localhost:3001/api/genre`);
+    const response = await fetch(`${BASE_URL}/api/genre`);
+
     if (!response.ok) {
-      throw new Error("Failed to fetch genres");
+      const error = new Error("Failed to fetch genres");
+      error.status = response.status;
+      throw error;
     }
-    const data = await response.json();
-    return data;
+
+    return await response.json();
   } catch (error) {
     console.error(error);
     throw error;
@@ -52,12 +58,32 @@ export const getAllGenres = async () => {
 
 export const getVinylById = async (id) => {
   try {
-    const response = await fetch(`http://localhost:3001/api/vinyl/${id}`);
+    const response = await fetch(`${BASE_URL}/api/vinyl/${id}`);
+
     if (!response.ok) {
-      throw new Error("Failed to fetch vinyl");
+      const error = new Error("Failed to fetch vinyl");
+      error.status = response.status;
+      throw error;
     }
-    const data = await response.json();
-    return data;
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+export const getLatestVinyls = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/api/vinyl/latest`);
+
+    if (!response.ok) {
+      const error = new Error("Failed to fetch latest vinyls");
+      error.status = response.status;
+      throw error;
+    }
+
+    return await response.json();
   } catch (error) {
     console.error(error);
     throw error;

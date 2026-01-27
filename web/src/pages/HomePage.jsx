@@ -1,61 +1,52 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { IoMdMail } from "react-icons/io";
 import VinylCard from "../features/vinyl/components/vinylCard";
 import ArtistOfMonth from "../features/vinyl/components/ArtistOfMonth";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-
-const genres = [
-  "Rock",
-  "Classic Rock",
-  "Jazz",
-  "Blues",
-  "Soul",
-  "Funk",
-  "Disco",
-  "Hip Hop",
-  "Electronic",
-  "House",
-  "Techno",
-  "Ambient",
-  "Classical",
-  "Soundtracks",
-  "Reggae",
-  "Punk",
-];
-
-const vinylList = [
-  {
-    id: 1,
-    image: "https://picsum.photos/800/600",
-    title: "Retro Waves",
-    artist: "DJ Vintage",
-    price: "$29.99",
-  },
-  {
-    id: 2,
-    image: "https://images.pexels.com/photos/164853/pexels-photo-164853.jpeg",
-    title: "Vinyl Dreams",
-    artist: "Analog Soul",
-    price: "$24.99",
-  },
-  {
-    id: 3,
-    image: "https://picsum.photos/700/600",
-    title: "Groove Nights",
-    artist: "The Turntables",
-    price: "$27.50",
-  },
-  {
-    id: 4,
-    image: "https://picsum.photos/700/700",
-    title: "Soulful Spins",
-    artist: "Vinyl Collective",
-    price: "$32.00",
-  },
-];
+import { getLatestVinyls } from "../features/vinyl/services/apiVinylService";
+import { ScaleLoader } from "react-spinners";
+import { useNavigate } from "react-router";
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const [vinyls, setVinyls] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchLatestVinyls = async () => {
+      setLoading(true);
+      try {
+        const data = await getLatestVinyls();
+        setVinyls(data);
+      } catch (err) {
+        if (!err.status) {
+          navigate("/error", {
+            state: {
+              statusCode: "Connection Error",
+              message: "Cannot reach server. Please check your connection.",
+            },
+          });
+        } else if (err.status >= 500) {
+          navigate("/error", {
+            state: {
+              statusCode: err.status,
+              message: "Server error. Please try again later.",
+            },
+          });
+        } else {
+          setError(err.message || "Failed to load records");
+        }
+        console.error("Error fetching latest vinyls:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLatestVinyls();
+  }, [navigate]);
+
   return (
     <div className="homePageContainer">
       <Container>
@@ -79,24 +70,21 @@ const HomePage = () => {
             </Button>
           </div>
         </div>
-        <div className="genreMenu mt-5">
-          <h2 className="mb-3">Browse by Genre</h2>
-          <div className="d-flex flex-wrap gap-2">
-            {genres.map((genre, index) => (
-              <Button key={index} className="btnGenre">
-                {genre}
-              </Button>
-            ))}
-          </div>
-        </div>
+
         <div className="homePageFeaturedRecords">
           <div className="homePageFeaturedRecordsTit">
             <h2>Featured Records</h2>
           </div>
           <div className="homePageVinylCardContainer">
-            {vinylList.map((vinyl) => (
-              <VinylCard key={vinyl.id} vinyl={vinyl} />
-            ))}
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center w-100 py-5">
+                <ScaleLoader color="#169db9" height={20} width={3} />
+              </div>
+            ) : error ? (
+              <p className="error">Error: {error}</p>
+            ) : (
+              vinyls.map((vinyl) => <VinylCard key={vinyl.id} vinyl={vinyl} />)
+            )}
           </div>
         </div>
         <ArtistOfMonth />

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/vinyl")
 public class PublicVinylController {
@@ -49,6 +51,11 @@ public class PublicVinylController {
                 : Sort.by("price").ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return vinylService.searchVinyls(query, minPrice, maxPrice, inStock, genre, pageable);
+    }
+
+    @GetMapping("/latest")
+    public List<VinylResponseDto> getLatestVinyls() {
+        return vinylService.getLatestVinyls();
     }
 
 

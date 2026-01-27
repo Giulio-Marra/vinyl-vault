@@ -1,6 +1,8 @@
 package giuliomarra.vinylvault.service;
 
 import giuliomarra.vinylvault.dto.NewGenreRequiredDto;
+import giuliomarra.vinylvault.exceptions.AlreadyExistException;
+import giuliomarra.vinylvault.exceptions.NotFoundException;
 import giuliomarra.vinylvault.model.Genre;
 import giuliomarra.vinylvault.repository.GenreRepository;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,10 @@ public class GenreService {
     public GenreService(GenreRepository genreRepository) {
         this.genreRepository = genreRepository;
     }
-    
+
     public Genre saveNewGenre(NewGenreRequiredDto body) {
         if (genreRepository.existsByName(body.name())) {
-            throw new RuntimeException("Genere già esistente");
+            throw new AlreadyExistException("Genere già esistente");
         }
 
         Genre genre = new Genre(body.name());
@@ -31,7 +33,7 @@ public class GenreService {
 
     public Genre getGenreById(Long id) {
         return genreRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Genere non trovato con id: " + id));
+                .orElseThrow(() -> new NotFoundException("Genere non trovato con id: " + id));
     }
 
     public Genre updateGenre(Long id, NewGenreRequiredDto body) {
@@ -39,7 +41,7 @@ public class GenreService {
 
         if (!genre.getName().equalsIgnoreCase(body.name())
                 && genreRepository.existsByName(body.name())) {
-            throw new RuntimeException("Genere già esistente");
+            throw new AlreadyExistException("Genere già esistente");
         }
 
         genre.setName(body.name());

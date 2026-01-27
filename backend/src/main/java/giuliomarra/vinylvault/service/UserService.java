@@ -4,6 +4,9 @@ import giuliomarra.vinylvault.dto.NewUserRequiredDto;
 import giuliomarra.vinylvault.dto.TokenResponseDto;
 import giuliomarra.vinylvault.dto.UserLoginRequiredDto;
 import giuliomarra.vinylvault.enums.Role;
+import giuliomarra.vinylvault.exceptions.AlreadyExistException;
+import giuliomarra.vinylvault.exceptions.BadRequestException;
+import giuliomarra.vinylvault.exceptions.NotFoundException;
 import giuliomarra.vinylvault.model.User;
 import giuliomarra.vinylvault.repository.UserRepository;
 import giuliomarra.vinylvault.security.JwtTool;
@@ -21,13 +24,13 @@ public class UserService {
         this.bcrypt = bcrypt;
         this.jwtTool = jwtTool;
     }
-    
+
     public User saveNewUser(NewUserRequiredDto body) {
         if (userRepository.existsByEmail(body.email())) {
-            throw new RuntimeException("Email gia in uso");
+            throw new AlreadyExistException("Email already exits");
         }
         if (userRepository.existsByUsername(body.username())) {
-            throw new RuntimeException("Username gia in uso");
+            throw new AlreadyExistException("Username already exits");
         }
 
         User user = new User(
@@ -42,12 +45,12 @@ public class UserService {
 
     public User findUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Utente con id: " + userId + " non trovato!"));
+                .orElseThrow(() -> new NotFoundException("Utente con id: " + userId + " non trovato!"));
     }
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Credenziali errate"));
+                .orElseThrow(() -> new BadRequestException("Wrong credential"));
     }
 
     public TokenResponseDto login(UserLoginRequiredDto body) {
@@ -55,7 +58,7 @@ public class UserService {
         if (bcrypt.matches(body.password(), userApp.getPassword())) {
             return new TokenResponseDto(jwtTool.createToken(userApp));
         } else {
-            throw new RuntimeException("Credenziali errate");
+            throw new BadRequestException("Wrong credential");
         }
     }
 }

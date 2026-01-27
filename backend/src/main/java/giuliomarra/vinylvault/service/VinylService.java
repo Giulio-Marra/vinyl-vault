@@ -3,6 +3,7 @@ package giuliomarra.vinylvault.service;
 import giuliomarra.vinylvault.dto.NewVinylRequiredDto;
 import giuliomarra.vinylvault.dto.TrackResponseDto;
 import giuliomarra.vinylvault.dto.VinylResponseDto;
+import giuliomarra.vinylvault.exceptions.NotFoundException;
 import giuliomarra.vinylvault.model.Artist;
 import giuliomarra.vinylvault.model.Genre;
 import giuliomarra.vinylvault.model.Track;
@@ -18,19 +19,32 @@ import java.util.List;
 
 @Service
 public class VinylService {
+
     private final VinylRepository vinylRepository;
     private final ArtistService artistService;
     private final GenreService genreService;
     private final TrackRepository trackRepository;
 
-    public VinylService(VinylRepository vinylRepository, ArtistService artistService, GenreService genreService, TrackRepository trackRepository) {
+    public VinylService(
+            VinylRepository vinylRepository,
+            ArtistService artistService,
+            GenreService genreService,
+            TrackRepository trackRepository
+    ) {
         this.vinylRepository = vinylRepository;
         this.artistService = artistService;
         this.genreService = genreService;
         this.trackRepository = trackRepository;
     }
+    
+    private Vinyl findVinylOrThrow(Long id) {
+        return vinylRepository.findById(id)
+                .orElseThrow(() ->
+                        new NotFoundException("Vinile non trovato con id: " + id)
+                );
+    }
 
-    public VinylResponseDto convertToDto(Vinyl vinyl, List<Track> trackList) {
+    private VinylResponseDto convertToDto(Vinyl vinyl, List<Track> trackList) {
         var tracks = trackList.stream()
                 .map(t -> new TrackResponseDto(
                         t.getId(),
@@ -56,9 +70,10 @@ public class VinylService {
 
     @Transactional
     public VinylResponseDto saveNewVinyl(NewVinylRequiredDto body) {
+
         Artist artist = artistService.findArtistById(body.artistId());
 
-        List<Genre> genreList = body.genreListId().stream()
+        List<Genre> genres = body.genreListId().stream()
                 .map(genreService::getGenreById)
                 .toList();
 
@@ -69,12 +84,12 @@ public class VinylService {
                 body.price(),
                 body.stock(),
                 artist,
-                genreList
+                genres
         );
 
         Vinyl savedVinyl = vinylRepository.save(vinyl);
 
-        List<Track> trackList = body.tracks().stream()
+        List<Track> tracks = body.tracks().stream()
                 .map(t -> new Track(
                         t.title(),
                         t.trackNumber(),
@@ -84,9 +99,15 @@ public class VinylService {
                 ))
                 .toList();
 
-        trackRepository.saveAll(trackList);
+        trackRepository.saveAll(tracks);
 
-        return convertToDto(savedVinyl, trackList);
+        return convertToDto(savedVinyl, tracks);
+    }
+
+    public VinylResponseDto getVinylById(Long id) {
+        Vinyl vinyl = findVinylOrThrow(id);
+        List<Track> tracks = trackRepository.findByVinylId(id);
+        return convertToDto(vinyl, tracks);
     }
 
     public Page<VinylResponseDto> getAllVinyls(Pageable pageable) {
@@ -97,21 +118,13 @@ public class VinylService {
                 });
     }
 
-    public VinylResponseDto getVinylById(Long id) {
-        Vinyl vinyl = vinylRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vinyl not found with id: " + id));
-
-        List<Track> tracks = trackRepository.findByVinylId(id);
-        return convertToDto(vinyl, tracks);
-    }
-
     @Transactional
     public VinylResponseDto updateVinyl(Long id, NewVinylRequiredDto body) {
-        Vinyl vinyl = vinylRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vinyl not found with id: " + id));
+
+        Vinyl vinyl = findVinylOrThrow(id);
 
         Artist artist = artistService.findArtistById(body.artistId());
-        List<Genre> genreList = body.genreListId().stream()
+        List<Genre> genres = body.genreListId().stream()
                 .map(genreService::getGenreById)
                 .toList();
 
@@ -121,37 +134,33 @@ public class VinylService {
         vinyl.setPrice(body.price());
         vinyl.setStock(body.stock());
         vinyl.setArtist(artist);
-        vinyl.setGenreList(genreList);
+        vinyl.setGenreList(genres);
 
-        Vinyl updatedVinyl = vinylRepository.save(vinyl);
+        vinylRepository.save(vinyl);
 
         trackRepository.deleteByVinylId(id);
 
-        List<Track> trackList = body.tracks().stream()
+        List<Track> tracks = body.tracks().stream()
                 .map(t -> new Track(
                         t.title(),
                         t.trackNumber(),
                         t.side(),
                         t.duration(),
-                        updatedVinyl
+                        vinyl
                 ))
                 .toList();
 
-        trackRepository.saveAll(trackList);
+        trackRepository.saveAll(tracks);
 
-        return convertToDto(updatedVinyl, trackList);
+        return convertToDto(vinyl, tracks);
     }
-
 
     @Transactional
     public void deleteVinyl(Long id) {
-        if (!vinylRepository.existsById(id)) {
-            throw new RuntimeException("Vinyl not found with id: " + id);
-        }
+        Vinyl vinyl = findVinylOrThrow(id);
         trackRepository.deleteByVinylId(id);
-        vinylRepository.deleteById(id);
+        vinylRepository.delete(vinyl);
     }
-
 
     public Page<VinylResponseDto> searchVinyls(
             String query,
@@ -159,26 +168,25 @@ public class VinylService {
             Double maxPrice,
             Boolean inStock,
             String genre,
-            Pageable pageable) {
-
-        return vinylRepository.searchVinyls(query, minPrice, maxPrice, inStock, genre, pageable)
+            Pageable pageable
+    ) {
+        return vinylRepository.searchVinyls(
+                        query, minPrice, maxPrice, inStock, genre, pageable
+                )
                 .map(vinyl -> {
                     List<Track> tracks = trackRepository.findByVinylId(vinyl.getId());
                     return convertToDto(vinyl, tracks);
                 });
     }
 
-
     @Transactional
     public VinylResponseDto updateStock(Long id, int newStock) {
-        Vinyl vinyl = vinylRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vinyl not found with id: " + id));
-
+        Vinyl vinyl = findVinylOrThrow(id);
         vinyl.setStock(newStock);
-        Vinyl updatedVinyl = vinylRepository.save(vinyl);
+        vinylRepository.save(vinyl);
 
         List<Track> tracks = trackRepository.findByVinylId(id);
-        return convertToDto(updatedVinyl, tracks);
+        return convertToDto(vinyl, tracks);
     }
 
     public List<VinylResponseDto> getLatestVinyls() {
@@ -190,6 +198,4 @@ public class VinylService {
                 })
                 .toList();
     }
-
-
 }

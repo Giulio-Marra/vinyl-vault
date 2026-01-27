@@ -51,7 +51,6 @@ const RegisterForm = () => {
 
       navigate("/login");
     } catch (err) {
-      // Errori di connessione (backend spento)
       if (!err.status) {
         navigate("/error", {
           state: {
@@ -59,22 +58,16 @@ const RegisterForm = () => {
             message: "Cannot reach server. Please check your connection.",
           },
         });
-      }
-      // Errori recuperabili (validazione, conflitti)
-      else if (err.status === 400 || err.status === 409) {
+      } else if (err.status === 400 || err.status === 409) {
         setError(err.message);
-      }
-      // Errori critici (server error)
-      else if (err.status >= 500) {
+      } else if (err.status >= 500) {
         navigate("/error", {
           state: {
             statusCode: err.status,
             message: "Server error. Please try again later.",
           },
         });
-      }
-      // Errori sconosciuti
-      else {
+      } else {
         setError(err.message || "Registration failed. Please try again.");
       }
     } finally {

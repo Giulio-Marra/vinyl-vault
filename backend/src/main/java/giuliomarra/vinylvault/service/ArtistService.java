@@ -1,6 +1,8 @@
 package giuliomarra.vinylvault.service;
 
 import giuliomarra.vinylvault.dto.NewArtistRequiredDto;
+import giuliomarra.vinylvault.exceptions.AlreadyExistException;
+import giuliomarra.vinylvault.exceptions.NotFoundException;
 import giuliomarra.vinylvault.model.Artist;
 import giuliomarra.vinylvault.repository.ArtistRepository;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class ArtistService {
 
     public Artist saveNewArtist(NewArtistRequiredDto body) {
         if (artistRepository.existsByName(body.name())) {
-            throw new RuntimeException("Artista con questo nome: " + body.name() + " gia esistente nel db");
+            throw new AlreadyExistException("Artista con questo nome: " + body.name() + " gia esistente nel db");
         }
 
         Artist artist = new Artist(
@@ -31,7 +33,7 @@ public class ArtistService {
 
     public Artist findArtistById(Long aristId) {
         return artistRepository.findById(aristId)
-                .orElseThrow(() -> new RuntimeException("Artista con id: " + aristId + " non trovato!"));
+                .orElseThrow(() -> new NotFoundException("Artista con id: " + aristId + " non trovato!"));
     }
 
     public List<Artist> findAllArtists() {

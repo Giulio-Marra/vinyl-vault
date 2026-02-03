@@ -12,14 +12,14 @@ import { FaUser, FaMagnifyingGlass } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router";
 import { getUserAction } from "../../features/auth/redux/authTunks";
+import { fetchCartCount } from "../../features/cart/redux/cartThunks";
 
 const MyNavbar = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
-  const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.auth.user);
-  const totalItems = cart.vinyl.reduce((sum, item) => sum + item.quantity, 0);
+  const itemCount = useSelector((state) => state.cart.itemCount);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -29,6 +29,17 @@ const MyNavbar = () => {
   useEffect(() => {
     dispatch(getUserAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
+      const token =
+        localStorage.getItem("token") || sessionStorage.getItem("token");
+
+      if (token) {
+        dispatch(fetchCartCount(token));
+      }
+    }
+  }, [dispatch, user]);
 
   return (
     <Navbar expand="lg" className="navBar">
@@ -77,9 +88,9 @@ const MyNavbar = () => {
 
             <Button className="btnNavBar position-relative">
               <FaShoppingCart />
-              {totalItems > 0 && (
+              {itemCount > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                  {totalItems}
+                  {itemCount}
                 </span>
               )}
             </Button>

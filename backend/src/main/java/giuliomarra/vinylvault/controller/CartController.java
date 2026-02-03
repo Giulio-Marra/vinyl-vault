@@ -26,7 +26,7 @@ public class CartController {
         return cartService.getCartItems(user);
     }
 
-    @PostMapping("/me/items")
+    @PostMapping("/items")
     @ResponseStatus(HttpStatus.CREATED)
     public CartItem addVinylToCart(
             @AuthenticationPrincipal User user,
@@ -52,4 +52,4 @@ public class CartController {
     ) {
         cartService.removeCartItem(user, itemId);
     }
-}   
+}

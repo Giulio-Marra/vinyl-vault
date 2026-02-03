@@ -5,24 +5,26 @@ import { BsMusicNoteList } from "react-icons/bs";
 import { FaTruck, FaArrowLeft } from "react-icons/fa";
 import { IoIosLock, IoMdCart } from "react-icons/io";
 import { MdAssignmentReturn } from "react-icons/md";
-import { useDispatch } from "react-redux";
+
 import { useParams, useNavigate } from "react-router";
-import { addProduct } from "../features/cart/redux/cartSlice";
+
 import { getVinylById } from "../features/vinyl/services/apiVinylService";
 import { ScaleLoader } from "react-spinners";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../features/cart/redux/cartThunks";
 
 const VinylDetailPage = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [vinyl, setVinyl] = useState({});
   const [quantityToAdd, setQuantityToAdd] = useState(1);
-  const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    const vinylToAdd = { ...vinyl, quantity: quantityToAdd };
-    dispatch(addProduct(vinylToAdd));
-  };
+  console.log(id);
+
+  const user = useSelector((state) => state.auth.user);
+  const cartLoading = useSelector((state) => state.cart.loading);
 
   const handleChangeQuantity = (decrease = false) => {
     if (decrease) {
@@ -36,8 +38,27 @@ const VinylDetailPage = () => {
     }
   };
 
-  console.log(vinyl);
-  console.log(id);
+  const addVinylToCart = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (vinyl.stock === 0) {
+      return;
+    }
+
+    const token =
+      localStorage.getItem("token") || sessionStorage.getItem("token");
+
+    dispatch(
+      addToCart({
+        id: id,
+        quantity: quantityToAdd,
+        token,
+      }),
+    );
+  };
 
   useEffect(() => {
     const fetchVinylById = async (id) => {
@@ -120,7 +141,7 @@ const VinylDetailPage = () => {
               <span className="ms-2 outStock">Out of Stock</span>
             )}
           </div>
-          <p className="text-secondary border-bottom  border-secondary pb-4">
+          <p className="text-secondary border-bottom border-secondary pb-4">
             {vinyl.description}
           </p>
           <div className="d-flex flex-column">
@@ -129,6 +150,7 @@ const VinylDetailPage = () => {
                 <button
                   className="btnPlusMenp"
                   onClick={() => handleChangeQuantity(true)}
+                  disabled={!user || vinyl.stock === 0}
                 >
                   -
                 </button>
@@ -136,6 +158,7 @@ const VinylDetailPage = () => {
                 <button
                   className="btnPlusMenp"
                   onClick={() => handleChangeQuantity()}
+                  disabled={!user || vinyl.stock === 0}
                 >
                   +
                 </button>
@@ -143,10 +166,15 @@ const VinylDetailPage = () => {
 
               <button
                 className="btnAddCart d-flex align-items-center gap-2"
-                onClick={handleAddToCart}
+                onClick={addVinylToCart}
+                disabled={vinyl.stock === 0 || cartLoading}
               >
                 <IoMdCart />
-                Add to Cart
+                {cartLoading
+                  ? "Adding..."
+                  : user
+                    ? "Add to Cart"
+                    : "Login for Buy"}
               </button>
               <span className="text-white">{vinyl.stock} product remain</span>
             </div>

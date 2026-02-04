@@ -84,15 +84,13 @@ const CatalogPage = () => {
     setPage(0);
     fetchVinyls(0);
     fetchGenres();
-  }, [searchQuery, valuePrice, inStock, order, selectedGenre]);
+  }, [searchQuery, inStock, order, selectedGenre]);
 
   useEffect(() => {
     if (page > 0) {
       fetchVinyls(page);
     }
   }, [page]);
-
-  console.log(genres);
 
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -178,16 +176,14 @@ const CatalogPage = () => {
             <div className="">
               <h5>Price Range</h5>
               <Slider
-                getAriaLabel={() => "Price range"}
                 value={valuePrice}
-                onChange={handleChangePriceValue}
-                valueLabelDisplay="off"
-                getAriaValueText={valuetext}
+                onChange={(_, newValue) => setValuePrice(newValue)}
+                onChangeCommitted={(_, newValue) => {
+                  setValuePrice(newValue);
+                }}
                 min={0}
                 max={1000}
-                sx={{
-                  color: "#169db9",
-                }}
+                sx={{ color: "#169db9" }}
               />
               <div className="d-flex justify-content-between text-secondary">
                 <p>{valuePrice[0]} £</p>

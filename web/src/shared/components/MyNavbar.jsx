@@ -57,8 +57,6 @@ const MyNavbar = () => {
             <Nav.Link as={Link} to="/catalog" className="navLink">
               Shop All
             </Nav.Link>
-            <Nav.Link className="navLink">New Arrivals</Nav.Link>
-            <Nav.Link className="navLink">Sale</Nav.Link>
           </Nav>
 
           <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
@@ -86,7 +84,10 @@ const MyNavbar = () => {
               </Button>
             )}
 
-            <Button className="btnNavBar position-relative">
+            <Button
+              className="btnNavBar position-relative "
+              onClick={() => navigate("/cart")}
+            >
               <FaShoppingCart />
               {itemCount > 0 && (
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">

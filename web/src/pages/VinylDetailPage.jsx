@@ -12,6 +12,7 @@ import { getVinylById } from "../features/vinyl/services/apiVinylService";
 import { ScaleLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/cart/redux/cartThunks";
+import ModalConf from "../features/cart/components/ModalConf";
 
 const VinylDetailPage = () => {
   const { id } = useParams();
@@ -20,6 +21,7 @@ const VinylDetailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [vinyl, setVinyl] = useState({});
   const [quantityToAdd, setQuantityToAdd] = useState(1);
+  const [showModal, setShowModal] = useState(false);
 
   console.log(id);
 
@@ -38,26 +40,29 @@ const VinylDetailPage = () => {
     }
   };
 
-  const addVinylToCart = () => {
+  const addVinylToCart = async () => {
     if (!user) {
       navigate("/login");
       return;
     }
 
-    if (vinyl.stock === 0) {
-      return;
-    }
+    if (vinyl.stock === 0) return;
 
     const token =
       localStorage.getItem("token") || sessionStorage.getItem("token");
 
-    dispatch(
-      addToCart({
-        id: id,
-        quantity: quantityToAdd,
-        token,
-      }),
-    );
+    try {
+      await dispatch(
+        addToCart({
+          id,
+          quantity: quantityToAdd,
+          token,
+        }),
+      );
+      setShowModal(true);
+    } catch (error) {
+      console.error("Add to cart failed", error);
+    }
   };
 
   useEffect(() => {
@@ -249,6 +254,7 @@ const VinylDetailPage = () => {
           </div>
         </Col>
       </Row>
+      <ModalConf show={showModal} onHide={() => setShowModal(false)} />
     </Container>
   );
 };

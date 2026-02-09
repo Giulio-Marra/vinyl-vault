@@ -111,7 +111,7 @@ const VinylDetailPage = () => {
   }
 
   return (
-    <Container className="my-5">
+    <Container className="my-5 pt-5">
       <Button
         variant="link"
         className="mb-3 p-0 d-flex align-items-center gap-2 text-decoration-none"

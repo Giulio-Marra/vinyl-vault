@@ -47,8 +47,8 @@ const CartPage = () => {
   }
 
   return (
-    <Container>
-      <Row className="mt-5">
+    <Container className="mt-5">
+      <Row className="pt-5">
         <Col md={8} className="p-2">
           <div className="border-bottom border-secondary">
             <div className="d-flex align-items-center">

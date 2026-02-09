@@ -42,7 +42,7 @@ const MyNavbar = () => {
   }, [dispatch, user]);
 
   return (
-    <Navbar expand="lg" className="navBar">
+    <Navbar expand="lg" className="navBar fixed-top">
       <Container fluid>
         <Navbar.Brand as={Link} to="/" className="text-white fw-bold">
           Vinyl Vault
@@ -59,22 +59,27 @@ const MyNavbar = () => {
             </Nav.Link>
           </Nav>
 
-          <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
-            <Form onSubmit={handleSubmit} className="searchBarNav">
-              <FaMagnifyingGlass />
-              <FormControl
-                type="text"
-                placeholder="Search Artist, Album..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="search-input"
-              />
-            </Form>
+          <Form
+            onSubmit={handleSubmit}
+            className="searchBarNav mx-auto"
+            style={{ maxWidth: "500px", width: "100%" }}
+          >
+            <FaMagnifyingGlass />
+            <FormControl
+              type="text"
+              placeholder="Search Artist, Album..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="search-input"
+            />
+          </Form>
 
+          <div className="d-flex align-items-center gap-2 ms-auto">
             {user ? (
               <Button
-                className="btnNavBar"
+                className="btnNavBar d-flex align-items-center justify-content-center"
                 onClick={() => navigate("/profile")}
+                style={{ minWidth: "40px", height: "40px" }}
               >
                 <FaUser />
               </Button>
@@ -85,12 +90,20 @@ const MyNavbar = () => {
             )}
 
             <Button
-              className="btnNavBar position-relative "
+              className="btnNavBar position-relative d-flex align-items-center justify-content-center"
               onClick={() => navigate("/cart")}
+              style={{ minWidth: "40px", height: "40px", overflow: "visible" }}
             >
               <FaShoppingCart />
               {itemCount > 0 && (
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <span
+                  className="position-absolute badge rounded-pill bg-danger"
+                  style={{
+                    top: "-5px",
+                    right: "-5px",
+                    transform: "none",
+                  }}
+                >
                   {itemCount}
                 </span>
               )}

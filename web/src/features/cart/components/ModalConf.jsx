@@ -7,8 +7,8 @@ const ModalConf = ({ show, onHide }) => {
 
   return (
     <Modal show={show} onHide={onHide} centered>
-      <Modal.Body className="text-center">
-        <p className="">Added to cart successfully</p>
+      <Modal.Body className="text-center modalContainerAccpet p-4">
+        <p className="text-white">Added to cart successfully</p>
         <div className="d-flex justify-content-center gap-3 mt-3">
           <button className="btnGoCart p-2" onClick={() => navigate("/cart")}>
             Go to Cart

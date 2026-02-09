@@ -115,4 +115,11 @@ public class CartService {
                 .mapToDouble(item -> item.getPrice() * item.getQuantity())
                 .sum();
     }
+
+    @Transactional
+    public void clearCart(User user) {
+        Cart cart = getCartByUser(user);
+        cart.getItems().clear();
+        cartItemRepository.deleteAllByCart(cart);
+    }
 }

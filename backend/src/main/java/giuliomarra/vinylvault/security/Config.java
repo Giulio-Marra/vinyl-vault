@@ -21,7 +21,7 @@ public class Config {
         httpSecurity.csrf(http -> http.disable());
         httpSecurity.sessionManagement(http -> http.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.cors(Customizer.withDefaults());
-        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**", "/api/**").permitAll());
+        httpSecurity.authorizeHttpRequests(http -> http.requestMatchers("/**", "/api/**").permitAll().requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll());
         return httpSecurity.build();
     }
 

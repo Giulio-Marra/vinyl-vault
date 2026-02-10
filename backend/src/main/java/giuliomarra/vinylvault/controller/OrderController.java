@@ -5,10 +5,9 @@ import giuliomarra.vinylvault.model.User;
 import giuliomarra.vinylvault.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/order")
@@ -25,10 +24,16 @@ public class OrderController {
         OrderResponse response = orderService.createOrder(user);
         return ResponseEntity.ok(response);
     }
-    
+
     @PostMapping("/confirm")
     public ResponseEntity<OrderResponse> confirm(@RequestParam String sessionId) {
         OrderResponse response = orderService.confirmPayment(sessionId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/my-orders")
+    public ResponseEntity<List<OrderResponse>> getMyOrders(@AuthenticationPrincipal User user) {
+        List<OrderResponse> orders = orderService.getUserOrders(user);
+        return ResponseEntity.ok(orders);
     }
 }

@@ -1,6 +1,6 @@
 package giuliomarra.vinylvault.model;
 
-import giuliomarra.vinylvault.enums.PaymentStatus;
+import giuliomarra.vinylvault.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -22,7 +22,7 @@ public class Order {
     private String stripeSessionId;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus orderStatus;
+    private OrderStatus orderStatus;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> items = new ArrayList<>();
@@ -32,7 +32,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(User user, Double totalPrice, String stripeSessionId, PaymentStatus orderStatus, List<OrderItem> items, LocalDateTime createdAt) {
+    public Order(User user, Double totalPrice, String stripeSessionId, OrderStatus orderStatus, List<OrderItem> items, LocalDateTime createdAt) {
         this.user = user;
         this.totalPrice = totalPrice;
         this.stripeSessionId = stripeSessionId;
@@ -73,11 +73,11 @@ public class Order {
         this.stripeSessionId = stripeSessionId;
     }
 
-    public PaymentStatus getOrderStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(PaymentStatus orderStatus) {
+    public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 

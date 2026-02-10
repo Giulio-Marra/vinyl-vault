@@ -12,6 +12,7 @@ import VinylDetailPage from "./pages/VinylDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import CartPage from "./pages/CartPage";
 import SuccessPage from "./pages/SuccesPage";
+import OrderPage from "./pages/OrderPage";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/catalog" element={<CatalogPage />} />
           <Route path="/vinyl/detail/:id" element={<VinylDetailPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/orders" element={<OrderPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

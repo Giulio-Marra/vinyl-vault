@@ -1,5 +1,6 @@
 package giuliomarra.vinylvault.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record OrderResponse(
@@ -7,6 +8,7 @@ public record OrderResponse(
         Double totalPrice,
         String status,
         List<OrderItemDTO> items,
-        String checkoutUrl
+        String checkoutUrl,
+        LocalDateTime createdAt
 ) {
 }

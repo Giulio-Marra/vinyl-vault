@@ -1,8 +1,10 @@
 package giuliomarra.vinylvault.enums;
 
-public enum PaymentStatus {
+public enum OrderStatus {
     PENDING,
     COMPLETED,
+    SHIPPED,
+    DELIVERED,
     FAILED,
     CANCELLED
 }

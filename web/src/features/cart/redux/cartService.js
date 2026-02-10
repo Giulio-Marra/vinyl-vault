@@ -78,3 +78,25 @@ export const confirmPayment = async (sessionId, token) => {
 
   return await response.json();
 };
+
+export const getMyOrders = async (token) => {
+  const response = await fetch(`${BASE_URL}/order/my-orders`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    const errData = await response.json();
+    const error = new Error(
+      errData.message || "Impossibile recuperare lo storico ordini",
+    );
+    error.status = response.status;
+    throw error;
+  }
+
+  const data = await response.json();
+  return data;
+};

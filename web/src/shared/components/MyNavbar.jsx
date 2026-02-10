@@ -6,6 +6,7 @@ import {
   Form,
   FormControl,
   Button,
+  NavDropdown,
 } from "react-bootstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import { FaUser, FaMagnifyingGlass } from "react-icons/fa6";
@@ -76,13 +77,43 @@ const MyNavbar = () => {
 
           <div className="d-flex align-items-center gap-2 ms-auto">
             {user ? (
-              <Button
-                className="btnNavBar d-flex align-items-center justify-content-center"
-                onClick={() => navigate("/profile")}
-                style={{ minWidth: "40px", height: "40px" }}
-              >
-                <FaUser />
-              </Button>
+              <div className="profile-dropdown-container">
+                <NavDropdown
+                  title={
+                    <div
+                      className="btnNavBar d-flex align-items-center justify-content-center"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "8px",
+                      }}
+                    >
+                      <FaUser />
+                    </div>
+                  }
+                  id="profile-dropdown"
+                  align="end"
+                  className="profile-dropdown-custom"
+                >
+                  <NavDropdown.Header className="text-white border-bottom mb-2">
+                    Ciao, {user.username || "Utente"}
+                  </NavDropdown.Header>
+                  <NavDropdown.Item onClick={() => navigate("/orders")}>
+                    I miei Ordini
+                  </NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item
+                    onClick={() => {
+                      localStorage.removeItem("token");
+                      sessionStorage.removeItem("token");
+                      window.location.href = "/login";
+                    }}
+                    className="text-danger"
+                  >
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </div>
             ) : (
               <Button className="btnNavBar" onClick={() => navigate("/login")}>
                 Login

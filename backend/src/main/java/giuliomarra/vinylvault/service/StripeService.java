@@ -20,7 +20,6 @@ public class StripeService {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                // Modifica questa riga nel tuo metodo createCheckoutSession
                 .setSuccessUrl("http://localhost:5173/order-success?session_id={CHECKOUT_SESSION_ID}")
                 .setCancelUrl("http://localhost:5173/cart")
                 .addLineItem(

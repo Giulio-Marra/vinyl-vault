@@ -2,7 +2,7 @@ package giuliomarra.vinylvault.service;
 
 import giuliomarra.vinylvault.dto.OrderItemDTO;
 import giuliomarra.vinylvault.dto.OrderResponse;
-import giuliomarra.vinylvault.enums.PaymentStatus;
+import giuliomarra.vinylvault.enums.OrderStatus;
 import giuliomarra.vinylvault.exceptions.BadRequestException;
 import giuliomarra.vinylvault.exceptions.NotFoundException;
 import giuliomarra.vinylvault.model.*;
@@ -40,7 +40,7 @@ public class OrderService {
 
         Order order = new Order();
         order.setUser(user);
-        order.setOrderStatus(PaymentStatus.PENDING);
+        order.setOrderStatus(OrderStatus.PENDING);
         order.setCreatedAt(LocalDateTime.now());
 
         double total = 0;
@@ -75,8 +75,8 @@ public class OrderService {
         Order order = orderRepository.findByStripeSessionId(sessionId)
                 .orElseThrow(() -> new NotFoundException("Order not found: " + sessionId));
 
-        
-        if (order.getOrderStatus() == PaymentStatus.COMPLETED) {
+
+        if (order.getOrderStatus() == OrderStatus.COMPLETED) {
             return convertToDTO(order, null);
         }
 
@@ -94,7 +94,7 @@ public class OrderService {
         }
 
 
-        order.setOrderStatus(PaymentStatus.COMPLETED);
+        order.setOrderStatus(OrderStatus.COMPLETED);
         Order updatedOrder = orderRepository.save(order);
 
         cartService.clearCart(order.getUser());
@@ -119,7 +119,16 @@ public class OrderService {
                 order.getTotalPrice(),
                 order.getOrderStatus().toString(),
                 itemDTOs,
-                checkoutUrl
+                checkoutUrl,
+                order.getCreatedAt()
         );
+    }
+
+    public List<OrderResponse> getUserOrders(User user) {
+        List<Order> orders = orderRepository.findByUserOrderByCreatedAtDesc(user);
+
+        return orders.stream()
+                .map(order -> convertToDTO(order, null))
+                .toList();
     }
 }

@@ -11,6 +11,7 @@ import CatalogPage from "./pages/CatalogPage";
 import VinylDetailPage from "./pages/VinylDetailPage";
 import ErrorPage from "./pages/ErrorPage";
 import CartPage from "./pages/CartPage";
+import SuccessPage from "./pages/SuccesPage";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         {/* Error page */}
         <Route path="/error" element={<ErrorPage />} />
+        <Route path="/order-success" element={<SuccessPage />} />
 
         {/* Rotte di autentificazione*/}
         <Route element={<AuthLayout />}>

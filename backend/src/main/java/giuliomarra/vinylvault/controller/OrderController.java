@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,6 +23,12 @@ public class OrderController {
     @PostMapping("/checkout")
     public ResponseEntity<OrderResponse> checkout(@AuthenticationPrincipal User user) {
         OrderResponse response = orderService.createOrder(user);
+        return ResponseEntity.ok(response);
+    }
+    
+    @PostMapping("/confirm")
+    public ResponseEntity<OrderResponse> confirm(@RequestParam String sessionId) {
+        OrderResponse response = orderService.confirmPayment(sessionId);
         return ResponseEntity.ok(response);
     }
 }
